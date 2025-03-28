@@ -3,6 +3,7 @@ const express = require("express");
 // create app
 const app = express();
 //const authorController = require("./controllers/authorController.js");
+const bookRouter = require("./routes/bookRouter.js");
 const authorRouter = require("./routes/authorRouter.js");
 const stateRouter = require("./routes/stateRouter.js");
 const categoryRouter = require("./routes/categoryRouter.js");
@@ -29,6 +30,7 @@ app.use(express.json());
 
 app.use( authRouter);
 
+//app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/state", stateRouter);
 app.use("/api/category", categoryRouter);
