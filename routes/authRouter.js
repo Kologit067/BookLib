@@ -7,8 +7,8 @@ authRouter.post("/api/login", authController.login);
 authRouter.use(async function(req, response, next){
  //   debugger;
     let token = req.headers['authorization'];
-    global.User = await authController.getUser(token);
-    if (global.User)
+    global.user = await authController.getUser(token);
+    if (global.user)
     {
         next();
     }

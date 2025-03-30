@@ -10,7 +10,7 @@ bookRouter.get("/byuser/:id", bookController.getBooksByUser);
 bookRouter.get("/bycategory/:id", bookController.getBooksByCategory);
 bookRouter.post("/updatestate", bookController.updateState);
 bookRouter.post("/addToCategory", bookController.addToCategory);
-bookRouter.post("/deleteFromCategory", bookController.deleteFromCategory);
+bookRouter.delete("/deleteFromCategory/:bookId/:categoryId", bookController.deleteFromCategory);
 bookRouter.post("/setContent", bookController.setContent);
 bookRouter.delete("/:id", bookController.deleteBook);
  

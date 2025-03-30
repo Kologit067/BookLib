@@ -11,7 +11,7 @@ const connectionOption = {
 exports.getStates = async function(request, response)
 {
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+    //debugger;
     connection.connect();
     const sqlSelect = `SELECT * FROM readingstate`;
     try {

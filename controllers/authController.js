@@ -17,7 +17,8 @@ exports.getUser = async function(token)
             if (data?.length ?? 0 > 0)
             {
                 user = {
-                userName : data[0]['UserName'],
+                    userId : data[0]['UserId'],
+                    userName : data[0]['UserName'],
                 role : data[0]['role']
                 };
             }

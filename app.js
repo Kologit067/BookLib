@@ -30,7 +30,7 @@ app.use(express.json());
 
 app.use( authRouter);
 
-//app.use("/api/book", bookRouter);
+app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/state", stateRouter);
 app.use("/api/category", categoryRouter);

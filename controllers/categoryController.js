@@ -24,7 +24,7 @@ exports.postCategory = async function(request, response)
     const category = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+    //debugger;
     connection.connect();
     let sql = null;
     if (category.categoryId)
@@ -67,7 +67,7 @@ exports.postCategory = async function(request, response)
 exports.deleteCategory = async function(request, response){
      
     const id = request.params.id; 
-    debugger;
+ //   debugger;
     const connection = mysql.createConnection(connectionOption);
     const sqlSelect = `SELECT * FROM category WHERE CategoryId = '${id}'`;
     const sql = `DELETE FROM category WHERE CategoryId = '${id}'`;
