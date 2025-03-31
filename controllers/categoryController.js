@@ -21,6 +21,10 @@ exports.getCategories = async function(request, response)
 
 exports.postCategory = async function(request, response)
 {
+    if (global.user.role != 'Admin')
+    {
+        response.status(403).send("Access denited.");
+    }    
     const category = request.body;
   
     const connection = mysql.createConnection(connectionOption);
@@ -65,13 +69,24 @@ exports.postCategory = async function(request, response)
 }
 
 exports.deleteCategory = async function(request, response){
-     
+    if (global.user.role != 'Admin')
+    {
+        response.status(403).send("Access denited.");
+    }    
+         
     const id = request.params.id; 
  //   debugger;
     const connection = mysql.createConnection(connectionOption);
     const sqlSelect = `SELECT * FROM category WHERE CategoryId = '${id}'`;
     const sql = `DELETE FROM category WHERE CategoryId = '${id}'`;
     try {
+        let bookResult = await connection.promise().query(`SELECT * FROM BookCategory WHERE CategoryId = ${id}`);
+        if (bookResult[0].length > 0)
+        {
+            response.status(404).send("Cannot delete category. There is book(s) in category.");
+            console.log("Cannot delete category. There is book(s) in category.");
+            return;
+        }
         let result = await connection.promise().query(sqlSelect);
         if (result[0].length == 0)
         {

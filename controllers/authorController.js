@@ -72,7 +72,14 @@ exports.deleteAuthor = async function(request, response){
     const sqlSelect = `SELECT * FROM author WHERE AuthorId = '${id}'`;
     const sql = `DELETE FROM author WHERE AuthorId = '${id}'`;
     try {
-        result = await connection.promise().query(sqlSelect);
+        let bookResult = await connection.promise().query(`SELECT * FROM Book WHERE AuthorId = ${id}`);
+        if (bookResult[0].length > 0)
+        {
+            response.status(404).send("Cannot delete author. Author has book(s).");
+            console.log("Cannot delete author. Author has book(s).");
+            return;
+        }
+        let result = await connection.promise().query(sqlSelect);
         if (result[0].length == 0)
         {
             response.status(404).send("Author not found");

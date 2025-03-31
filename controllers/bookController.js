@@ -32,11 +32,22 @@ exports.postBook = async function(request, response)
     connection.connect();
     let sql = null;
  
-    const sqlSelect = `SELECT * FROM book WHERE title = '${book.title}' and AuthorId = '${book.authorId}'`;
+    const sqlSelect = `SELECT * FROM book WHERE title = '${book.title}' and AuthorId = ${book.authorId}`;
     try 
     {
         if (book.bookId)
         {
+            let bookrResult = await connection.promise().query(`SELECT * FROM Book WHERE BookId = '${book.bookId}'`);
+            if (bookrResult[0].length == 0)
+            {
+                response.send('Author not found.');
+                return;
+            }
+            if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+            {
+                response.status(403).send("Access denited.");
+                return;
+            }    
             sql = `UPDATE book 
             SET Title = '${book.title}',
             BookDescription = '${book.description}'
@@ -83,8 +94,8 @@ exports.deleteBook = async function(request, response){
     const id = request.params.id; 
     debugger;
     const connection = mysql.createConnection(connectionOption);
-    const sqlSelect = `SELECT * FROM book WHERE BookId = '${id}'`;
-    const sql = `DELETE FROM book WHERE BookId = '${id}'`;
+    const sqlSelect = `SELECT * FROM book WHERE BookId = ${id}`;
+    const sql = `DELETE FROM book WHERE BookId = ${id}`;
     try {
         let result = await connection.promise().query(sqlSelect);
         if (result[0].length == 0)
@@ -93,6 +104,18 @@ exports.deleteBook = async function(request, response){
             console.log("Book not found");
             return;
         }
+        if (global.user.role != 'Admin' && global.user.userId != result[0][0]['bookId'])
+        {
+            response.status(403).send("Access denited.");
+            return;
+        }    
+        let deleteHistoryResults  = await  connection.promise().query(`DELETE FROM booklib.bookreadingstatehistory
+WHERE bookreadingstateId IN (
+SELECT bookreadingstateId FROM booklib.bookreadingstate
+WHERE BookId = ${id});`);
+        
+        let deleteStateResults  = await  connection.promise().query(`DELETE FROM booklib.bookreadingstate WHERE BookId = ${id};`);
+        
         let results  = await  connection.promise().query(sql);
         response.status(200);
         response.send(results);
@@ -114,7 +137,7 @@ exports.getBookById = async function(request, response){
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId) 
-WHERE BookId = ${id}`;
+WHERE BookId = ${id} `;
     try {
         let result = await connection.promise().query(sqlSelect);
         if (result[0].length == 0)
@@ -147,7 +170,7 @@ exports.getBooksByAuthor = async function(request, response){
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
-WHERE b.AuthorId = ${authorId}`;
+WHERE b.AuthorId = ${authorId} `;
     try {
         result = await connection.promise().query(sqlSelect);
         response.send(result[0]);
@@ -216,13 +239,19 @@ exports.updateState = async function(request, response) {
     try 
     {
 
-        let bookResult = await connection.promise().query(`SELECT * FROM Book WHERE BookId = '${bookState.bookId}'`);
+        let bookResult = await connection.promise().query(`SELECT * FROM Book 
+            WHERE BookId = ${bookState.bookId} AND (${global.user.role} == 'Admin' || ${global.user.userId} == b.UserId)`);
         if (bookResult[0].length == 0)
         {
             response.send('Book not found.');
             return;
         }
-        let stateResult = await connection.promise().query(`SELECT * FROM ReadingState WHERE ReadingStateId = '${bookState.readingStateId}'`);
+        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        {
+            response.status(403).send("Access denited.");
+            return;
+        }    
+       let stateResult = await connection.promise().query(`SELECT * FROM ReadingState WHERE ReadingStateId = ${bookState.readingStateId}`);
         if (stateResult[0].length == 0)
         {
             response.send('State not found.');
@@ -285,17 +314,24 @@ exports.addToCategory = async function(request, response){
     connection.connect();
     let sql = null;
  
-    const sqlSelect = `SELECT * FROM bookcategory WHERE BookId = '${bookCategory.bookId}' and CategoryId = '${bookCategory.categoryId}'`;
+    const sqlSelect = `SELECT * FROM bookcategory 
+    WHERE BookId = ${bookCategory.bookId} and CategoryId = ${bookCategory.categoryId}`;
     try 
     {
 
-        let bookResult = await connection.promise().query(`SELECT * FROM Book WHERE BookId = '${bookCategory.bookId}'`);
+        let bookResult = await connection.promise().query(`SELECT * 
+            FROM Book WHERE BookId = '${bookCategory.bookId}' AND (${global.user.role} == 'Admin' || ${global.user.userId} == b.UserId)`);
         if (bookResult[0].length == 0)
         {
             response.send('Book not found.');
             return;
         }
-        let categoryResult = await connection.promise().query(`SELECT * FROM Category WHERE CategoryId = '${bookCategory.categoryId}'`);
+        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        {
+            response.status(403).send("Access denited.");
+            return;
+        }    
+        let categoryResult = await connection.promise().query(`SELECT * FROM Category WHERE CategoryId = ${bookCategory.categoryId}`);
         if (categoryResult[0].length == 0)
         {
             response.send('Category not found.');
@@ -335,9 +371,21 @@ exports.deleteFromCategory = async function(request, response){
     debugger;
     const connection = mysql.createConnection(connectionOption);
     const sqlSelect = `SELECT * FROM bookCategory WHERE CategoryId = ${categoryId} AND bookId = ${bookId}`;
-    const sql = `DELETE FROM bookCategory WHERE CategoryId = '${categoryId}' AND bookId = ${bookId}`;
+    const sql = `DELETE FROM bookCategory WHERE CategoryId = ${categoryId} AND bookId = ${bookId}`;
     try {
-        let result = await connection.promise().query(sqlSelect);
+        let bookResult = await connection.promise().query(`SELECT * FROM Book 
+            WHERE BookId = ${bookId} AND (${global.user.role} == 'Admin' || ${global.user.userId} == b.UserId)`);
+        if (bookResult[0].length == 0)
+        {
+            response.send('Book not found.');
+            return;
+        }
+        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        {
+            response.status(403).send("Access denited.");
+            return;
+        }    
+       let result = await connection.promise().query(sqlSelect);
         if (result[0].length == 0)
         {
             response.status(404).send("Book is not in category.");

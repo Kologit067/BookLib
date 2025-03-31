@@ -3,6 +3,7 @@ const authController = require("../controllers/authController.js");
 
 const authRouter = express.Router();
 authRouter.post("/api/login", authController.login);
+authRouter.post("/api/register", authController.register);
 
 authRouter.use(async function(req, response, next){
  //   debugger;
