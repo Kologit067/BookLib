@@ -10,7 +10,7 @@
 			"name": "Author",
 			"item": [
 				{
-					"name": "http://localhost:3000/api/author",
+					"name": "post author",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -42,7 +42,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/authors",
+					"name": "GetAllAuthors",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -78,7 +78,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/author/byid/6",
+					"name": "get author byid",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -115,7 +115,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/author/byid/6",
+					"name": "delete author",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -153,7 +153,7 @@
 			"name": "State",
 			"item": [
 				{
-					"name": "http://localhost:3000/api/state",
+					"name": "get all states",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -189,7 +189,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/state",
+					"name": "post state",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -221,7 +221,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/state/5",
+					"name": "delete state",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -259,7 +259,7 @@
 			"name": "Category",
 			"item": [
 				{
-					"name": "http://localhost:3000/api/category",
+					"name": "post category",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -291,7 +291,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/category/all",
+					"name": "get all category",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
@@ -333,7 +333,7 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:3000/api/category/2",
+					"name": "delete category",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -371,7 +371,7 @@
 			"name": "Auth",
 			"item": [
 				{
-					"name": "http://localhost:3000/api/login",
+					"name": "Login",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -397,6 +397,453 @@
 							"path": [
 								"api",
 								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userName\" : \"User2\",\r\n    \"password\" : \"User2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Book",
+			"item": [
+				{
+					"name": "PostBook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\" : null,\r\n    \"authorId\" : 4,\r\n    \"title\" : \"Pro Entity Framework Core 2 for ASP.NET Core MVC\",\r\n    \"description\" : \"Pro Entity Framework Core 2 for ASP.NET Core MVC\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllBooks",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/all",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBooksByAuthor",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/byauthor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"byauthor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBooksByUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/byuser/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"byuser",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBookById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/byid/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"byid",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AddVookToCategory",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\" : 7,\r\n    \"categoryId\" : 7\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/addToCategory",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"addToCategory"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetBooksBycategory",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/bycategory/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"bycategory",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DeleteBookFromCategory",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\" : 5,\r\n    \"authorName\" : \"Ben-Gan I.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/deleteFromCategory/1/7",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"deleteFromCategory",
+								"1",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UpdateBookState",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "21BF0F30-7795-4BF2-99CC-13C505D38259",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\" : 1,\r\n    \"readingStateId\" : 3,\r\n    \"page\" : 121\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/book/updatestate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"book",
+								"updatestate"
 							]
 						}
 					},
