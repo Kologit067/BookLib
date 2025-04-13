@@ -20,7 +20,7 @@ exports.getUser = async function(token)
                 user = {
                     userId : data[0]['UserId'],
                     userName : data[0]['UserName'],
-                role : data[0]['role']
+                    role : data[0]['role']
                 };
             }
         }
@@ -37,7 +37,7 @@ exports.login = async function(request, response)
     const login = request.body;
   
     const connection = mysql.createConnection(connectionOption);
- //   debugger;
+//    debugger;
     connection.connect();
     const sqlSelect = `SELECT * FROM user WHERE UserName = '${login.userName}' AND Password = '${login.password}'`;
     try {
@@ -50,7 +50,8 @@ exports.login = async function(request, response)
             {
                 user = {
                 token : data[0]['token'],
-                role : data[0]['role']
+                role : data[0]['role'],
+                userId : data[0]['UserId']
                 };
             }
         }

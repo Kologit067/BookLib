@@ -7,8 +7,9 @@ const stateRouter = require("./routes/stateRouter.js");
 const categoryRouter = require("./routes/categoryRouter.js");
 const authRouter = require("./routes/authRouter.js");
 
-app.use(express.static("styles"));
+app.use(express.static("web"));
 app.use(express.static("scripts"));
+
 app.use(express.json()); 
 
 app.use( authRouter);
@@ -26,9 +27,10 @@ app.get("/category", function(request, response){
      
     response.send("<h1>Контакты</h1>");
 });
-app.use("/", function(_, response){
+
+app.use("/index", function(_, response){
      
-    response.sendFile(__dirname + "/index.html");
+    response.sendFile(__dirname + "/web/index.html");
 });
 // start listening connection on 3000 port
 app.listen(3000);

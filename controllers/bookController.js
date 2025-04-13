@@ -8,7 +8,7 @@ exports.getBooks = async function(request, response)
     const connection = mysql.createConnection(connectionOption);
     //debugger;
     connection.connect();
-    const sqlSelect = `SELECT BookId, b.AuthorId, a.AuthorName, Title, FileName, BookDescription, b.LastUpdate, b.UserId, u.UserName 
+    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)`;
@@ -133,7 +133,7 @@ exports.getBookById = async function(request, response){
      
     const id = request.params.id; 
     const connection = mysql.createConnection(connectionOption);
-    const sqlSelect = `SELECT BookId, b.AuthorId, a.AuthorName, Title, FileName, BookDescription, b.LastUpdate, b.UserId, u.UserName 
+    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId) 
@@ -166,7 +166,7 @@ exports.getBooksByAuthor = async function(request, response){
     const connection = mysql.createConnection(connectionOption);
     debugger;
     connection.connect();
-    const sqlSelect = `SELECT BookId, b.AuthorId, a.AuthorName, Title, FileName, BookDescription, b.LastUpdate, b.UserId, u.UserName 
+    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
@@ -188,7 +188,7 @@ exports.getBooksByUser = async function(request, response){
     const connection = mysql.createConnection(connectionOption);
     debugger;
     connection.connect();
-    const sqlSelect = `SELECT BookId, b.AuthorId, a.AuthorName, Title, FileName, BookDescription, b.LastUpdate, b.UserId, u.UserName 
+    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, tileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
@@ -210,7 +210,7 @@ exports.getBooksByCategory = async function(request, response){
     const connection = mysql.createConnection(connectionOption);
     debugger;
     connection.connect();
-    const sqlSelect = `SELECT b.BookId, b.AuthorId, a.AuthorName, Title, FileName, BookDescription, b.LastUpdate, b.UserId, u.UserName 
+    const sqlSelect = `SELECT b.bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)

@@ -13,7 +13,7 @@ exports.getStates = async function(request, response)
     const connection = mysql.createConnection(connectionOption);
     //debugger;
     connection.connect();
-    const sqlSelect = `SELECT * FROM readingstate`;
+    const sqlSelect = `SELECT readingStateId, stateName FROM readingstate`;
     try {
         let result = await connection.promise().query(sqlSelect); 
         response.send(result[0]);
