@@ -85,9 +85,12 @@ async function fillAuthorForm(authorId)
     if (authorId)
     {
         let author = await fetchAuthorById(authorId);
-        $('#authorid').first().val(author.authorId);
-        $('#authorname').first().val(author.authorName);
-        $("#authoreditlabel").text("Edit Author");
+        if ( author)
+        {
+            $('#authorid').first().val(author.authorId);
+            $('#authorname').first().val(author.authorName);
+            $("#authoreditlabel").text("Edit Author");
+        }
     }
     else
     {
@@ -99,18 +102,35 @@ async function fillAuthorForm(authorId)
 
 async function fillDeleteAuthorForm(authorId)
 {
+    debugger;
     if (authorId)
     {
         let author = await fetchAuthorById(authorId);
         if (author)
         {
             showAuthorDelete();
-            if (author.books)
+            if ((author.books?.length ?? 0) > 0)
             {
+                if( !$('#authordeleteaction').first().hasClass("hidden")){
+                    $('#authordeleteaction').first().addClass("hidden");
+                }
+                $('#authordeleteissue').first().removeClass("hidden");
+                $("#authoreditlabel").text("Author has books. Author can not be deleted");
 
+                var results = $('#authordeleteissuetable');  // 
+                results.empty();                // clear element
+                results.append('<thead><tr><th>Id</th><th>Title</th></thead><tbody>')
+                for (var i = 0; i < author.books.length; i++) {
+                    results.append('<tr><td>' + author.books[i].bookId + '</td> <td>' + author.books[i].title + '</td></tr>'); 
+                }
             }
             else
             {
+                if( !$('#authordeleteissue').first().hasClass("hidden")){
+                    $('#authordeleteissue').first().addClass("hidden");
+                }
+                $('#authordeleteaction').first().removeClass("hidden");
+
                 $('#deleteauthorid').first().val(author.authorId);
                 $('#deleteauthorname').first().val(author.authorName);
             }
