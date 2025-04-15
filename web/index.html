@@ -92,11 +92,11 @@
     <div class='hidden part' id="authoreditpart">
         <h3 id="authoreditlabel">Edit Author</h3>
         <input class='hidden' id="authorid" type="text">
-        <div id="authorediterror"></div>
+        <div class="errortext" id="authorediterror"></div>
         <table id="authoredit">
             <tr>
                 <td><label>Author Name</label></td>
-                <td><input id="authorname" type="text"></td>
+                <td><input size="70" id="authorname" type="text"></td>
             </tr>
             <tr>
                 <td><button id="saveauthor">Save</button></td>
@@ -123,34 +123,11 @@
         </table>
 
     </div>
-
-    <div class='hidden part' id="login">
-        <h4 id="loginlabel">Login</h4>
-        <table id="loginedit">
-            <tr>
-                <td><label>Name</label></td>
-                <td><input id="loginname" type="text"></td>
-            </tr>
-            <tr>
-                <td><label>Password</label></td>
-                <td><input id="loginpassword" type="text"></td>
-            </tr>
-            <tr>
-                <td colspan="2"><div id="loginresult"></div></td>
-            </tr>           
-            <tr>
-                <td><button id="applylogin">Save</button></td>
-                <td><button id="cancellogin">Cancel</button></td>
-            </tr>
-        </table>
-
-    </div>
-
     
     <div class='hidden part' id="bookdeletepart">
         <h3 id="bookdeletelabel">You are going to delete Book.</h3>
         <input class='hidden' id="deletebookrid" type="text">
-        <table>
+        <table id="bookdeleteaction">
             <tr>
                 <td><label>Book Title</label></td>
                 <td><input id="deletebooktitle" type="text"></td>
@@ -163,6 +140,10 @@
                 <td><button id="deletebookbutton">Delete</button></td>
                 <td><button id="canceldeletebook">Cancel</button></td>
             </tr>
+        </table>
+        <table id="bookdeleteissue">
+            <div id="bookdeleteissuetext"></div>
+            <table id="bookdeleteissuetable"></table>
         </table>
     </div>
     
@@ -179,13 +160,14 @@
             </tr>
             <tr>
                 <td><button id="deleteauthorbutton">Delete</button></td>
-                <td><button id="canceldeleteauthor">Cancel</button></td>
+                <td><button class="canceldeleteauthor">Cancel</button></td>
             </tr>
         </table>
-        <table id="authordeleteissue">
-            <div id="authordeleteissuetext"></div>
+        <div id="authordeleteissue">
+            <div class="errortext" id="authordeleteissuetext"></div>
             <table id="authordeleteissuetable"></table>
-        </table>
+            <button class="canceldeleteauthor">Cancel</button>
+        </div>
     </div>
     
     <div class='hidden part' id="categorydeletepart">
@@ -209,6 +191,29 @@
             <div id="categorydeleteissuetext"></div>
             <table id="categorydeleteissuetable"></table>
         </table>
+    </div>
+
+    
+    <div class='hidden part' id="login">
+        <h4 id="loginlabel">Login</h4>
+        <table id="loginedit">
+            <tr>
+                <td><label>Name</label></td>
+                <td><input id="loginname" type="text"></td>
+            </tr>
+            <tr>
+                <td><label>Password</label></td>
+                <td><input id="loginpassword" type="text"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div id="loginresult"></div></td>
+            </tr>           
+            <tr>
+                <td><button id="applylogin">Login</button></td>
+                <td><button id="cancellogin">Cancel</button></td>
+            </tr>
+        </table>
+
     </div>
 
     <script defer src="webapp.js"></script>

@@ -181,7 +181,7 @@ function createEventHandlers()
         await showBook();
     });
 
-    $('body').on('click', '#canceldeleteauthor',async function(e){
+    $('body').on('click', '.canceldeleteauthor',async function(e){
         debugger;
         e.preventDefault();
         await showAuthors();
@@ -288,7 +288,7 @@ async function showBooks()
 
 async function showCategories()
 {
-    debugger;
+//    debugger;
     hiddenAll();
     $('#categorypart').first().removeClass("hidden");
     let categories = await fetchCategories();
@@ -297,7 +297,7 @@ async function showCategories()
 
 async function showAuthors()
 {
-    debugger;
+//    debugger;
     hiddenAll();
     $('#authorpart').first().removeClass("hidden");
     let authors = await fetchAuthors();

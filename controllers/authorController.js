@@ -28,17 +28,21 @@ exports.postAuthor = async function(request, response)
     const connection = mysql.createConnection(connectionOption);
     connection.connect();
     let sql = null;
-    if (author.authorId)
-    {
-        sql = `UPDATE author SET AuthorName = '${author.authorName}' WHERE AuthorId = ${author.authorId}`;
-    }
-    else
-    {
-        sql = `INSERT INTO author(AuthorName) VALUES('${author.authorName}')`;
-    }
-    const sqlSelect = `SELECT * FROM author WHERE AuthorName = '${author.authorName}'`;
     try 
     {
+        if (author.authorId)
+        {
+                sql = `UPDATE author SET AuthorName = '${author.authorName}' WHERE AuthorId = ${author.authorId}`;
+        }
+        else
+        {
+            sql = `INSERT INTO author(AuthorName) VALUES('${author.authorName}')`;
+        }
+        let sqlSelect = `SELECT * FROM author WHERE AuthorName = '${author.authorName}'`;
+        if (author.authorId)
+        {
+            sqlSelect = `SELECT * FROM author WHERE AuthorName = '${author.authorName}' AND  authorId <> '${author.authorId}'`;
+        }
         result = await connection.promise().query(sqlSelect);
         if (result[0].length > 0)
         {
@@ -121,7 +125,7 @@ exports.getAuthorById = async function(request, response){
         }  
         else
         {
-            author.book = booksResult[0][0]; 
+            author.books = booksResult[0]; 
         }      
         response.json(author);
         connection.end(function(err) {

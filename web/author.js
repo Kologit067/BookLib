@@ -1,4 +1,3 @@
-
 function getAuthorList()
 {
     //data = loadFromLocalStorage();
@@ -10,20 +9,37 @@ function getAuthorList()
 async function saveAuthorForm()
 {
     let author = {};
+    
     author.authorId = $('#authorid').first().val();
     author.authorName = $('#authorname').first().val();
-    await saveAuthor(author);
-    await showAuthors();
+    let response = await saveAuthor(author);
+    if (response.status)
+    {
+        const message = await response.text();
+        $('#authorediterror').first().removeClass("hidden");
+        $("#authorediterror").text(`Error: ${message}`);
+    }
+    else
+    {
+        if( !$('#authorediterror').first().hasClass("hidden"))
+            {
+            $('#authorediterror').first().addClass("hidden");
+        }
+        await showAuthors();
+    }
 }
 
 async function saveAuthor(author)
 {
 //    debugger;
-    author = await saveAuthorToServer(author);
+    let response = await saveAuthorToServer(author);
     debugger;
-    let authors = JSON.parse( localStorage.authors );
-    if (authors)
+    if (response)
     {
+        if (response.status)
+            return response;
+        author = response;
+        let authors = JSON.parse( localStorage.authors );
         let idx = authors.findIndex(t => t.authorId == author.authorId);
         if (idx > -1)
         {
@@ -36,7 +52,7 @@ async function saveAuthor(author)
         localStorage.setItem('authors', JSON.stringify(authors));
     
     }
-
+    return author;
 }
 
 async function deleteAuthor()
@@ -82,6 +98,9 @@ async function cancelAuthorForm()
 async function fillAuthorForm(authorId)
 {
     showAuthorEdit();
+    if( !$('#authorediterror').first().hasClass("hidden")){
+        $('#authorediterror').first().addClass("hidden");
+    }
     if (authorId)
     {
         let author = await fetchAuthorById(authorId);
@@ -115,7 +134,7 @@ async function fillDeleteAuthorForm(authorId)
                     $('#authordeleteaction').first().addClass("hidden");
                 }
                 $('#authordeleteissue').first().removeClass("hidden");
-                $("#authoreditlabel").text("Author has books. Author can not be deleted");
+                $("#authordeleteissuetext").text("Author has books. Author can not be deleted");
 
                 var results = $('#authordeleteissuetable');  // 
                 results.empty();                // clear element

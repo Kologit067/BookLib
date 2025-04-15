@@ -31,21 +31,23 @@ exports.postCategory = async function(request, response)
     const connection = mysql.createConnection(connectionOption);
     connection.connect();
     let sql = null;
-    if (category.categoryId)
-    {
-        sql = `UPDATE category 
-        SET CategoryName = '${category.categoryName}', 
-            CategoryDescription = '${category.categoryDescription}' 
-        WHERE CategoryId = ${category.categoryId}`;
-    }
-    else
-    {
-        sql = `INSERT INTO category ( categoryName,CategoryDescription) VALUES('${category.categoryName}','${category.categoryDescription}')`;
-    }
-    let sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' `;
-    if (category.categoryId)
-        sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' AND  CategoryId <> '${category.categoryId}'`;
     try {
+        if (category.categoryId)
+        {
+            sql = `UPDATE category 
+                SET CategoryName = '${category.categoryName}', 
+                    CategoryDescription = '${category.categoryDescription}' 
+                WHERE CategoryId = ${category.categoryId}`;
+        }
+        else
+        {
+            sql = `INSERT INTO category ( categoryName,CategoryDescription) VALUES('${category.categoryName}','${category.categoryDescription}')`;
+        }
+        let sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' `;
+        if (category.categoryId)
+        {
+            sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' AND  CategoryId <> '${category.categoryId}'`;
+        }
         let result = await connection.promise().query(sqlSelect);
         if (result[0].length > 0)
             {
@@ -135,7 +137,7 @@ WHERE c.CategoryId = ${id};`);
         }  
         else
         {
-            category.book = booksResult[0][0]; 
+            category.book = booksResult[0]; 
         }      
         response.json(category);
         connection.end(function(err) {

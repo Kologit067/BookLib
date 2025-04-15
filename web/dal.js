@@ -251,7 +251,6 @@ async function login(userName, password) {
     }  
 }
 
-
 async function saveCategoryToServer (category) {
     try 
     {
@@ -274,6 +273,33 @@ async function saveCategoryToServer (category) {
     {
         debugger;
         console.error(`Error saving category: ${category.categoryId}`, error); // 
+        return error;
+    }  
+}
+
+
+async function saveAuthorToServer (author) {
+    try 
+    {
+        debugger;
+        const option = getOptionForPost();
+        option.body = JSON.stringify(author)
+        let response = await fetch(`http://localhost:3000/api/author`, option) // 
+        debugger;
+        let result = null;
+        if (response.status != 400)
+        {
+            debugger;
+            result = await response.json();  // 
+            author.authorId = result.insertId;
+            return author;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error(`Error saving author: ${author.authorId}`, error); // 
         return error;
     }  
 }
