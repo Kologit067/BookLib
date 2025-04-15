@@ -21,7 +21,7 @@ exports.getCategories = async function(request, response)
 
 exports.postCategory = async function(request, response)
 {
-    debugger;
+    //debugger;
     if (global.user.role != 'Admin')
     {
         response.status(403).send("Access denited.");
@@ -42,7 +42,9 @@ exports.postCategory = async function(request, response)
     {
         sql = `INSERT INTO category ( categoryName,CategoryDescription) VALUES('${category.categoryName}','${category.categoryDescription}')`;
     }
-    const sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' AND (CategoryId IS NULL OR CategoryId = '' OR  CategoryId <> ${category.categoryId})`;
+    let sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' `;
+    if (category.categoryId)
+        sqlSelect = `SELECT * FROM category WHERE categoryName = '${category.categoryName}' AND  CategoryId <> '${category.categoryId}'`;
     try {
         let result = await connection.promise().query(sqlSelect);
         if (result[0].length > 0)

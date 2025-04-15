@@ -144,7 +144,13 @@ function createEventHandlers()
         await deleteAuthor();
     });
 
-    $('body').on('click', '#deleteCategorybutton',async function(e){
+    // $('body').on('click', '#deleteCategorybutton, deleteCategoryexec',async function(e){
+    //     debugger;
+    //     e.preventDefault();
+    //     await deleteCategory();
+    // });
+
+    $('body').on('click', '.deleteCategoryexec',async function(e){
         debugger;
         e.preventDefault();
         await deleteCategory();
@@ -184,7 +190,7 @@ function createEventHandlers()
     $('body').on('click', '#canceldeletecategory',async function(e){
         debugger;
         e.preventDefault();
-        await showCategory();
+        await showCategories();
     });
 
     $('body').on('click', '#applylogin', async function(e){

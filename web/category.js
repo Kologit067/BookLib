@@ -4,6 +4,9 @@ async function fillCategoryForm(categoryId)
 {
     debugger;
     showCategoryEdit();
+    if( !$('#categoryediterror').first().hasClass("hidden")){
+        $('#categoryediterror').first().addClass("hidden");
+    }
     if (categoryId)
     {
         let category = await fetchCategoryById(categoryId);
@@ -30,14 +33,29 @@ async function saveCategoryForm()
     category.categoryId = $('#categoryid').first().val();
     category.categoryName = $('#categoryname').first().val();
     category.categoryDescription = $('#categorydescription').first().val();
-    await saveCategory(category);
-    await showCategories();
+    let response = await saveCategory(category);
+    if (response.status)
+    {
+        const message = await response.text();
+        $('#categoryediterror').first().removeClass("hidden");
+        $("#categoryediterror").text(`Error: ${message}`);
+    }
+    else
+    {
+        if( !$('#categoryediterror').first().hasClass("hidden")){
+            $('#categoryediterror').first().addClass("hidden");
+        }
+        await showCategories();
+    }
 }
 
 async function saveCategory(category)
 {
 //    debugger;
-    category  = await saveCategoryToServer(category);
+    let response  = await saveCategoryToServer(category);
+    if (response.status)
+        return response;
+    category = response;
     let categories = JSON.parse( localStorage.categories );
     let idx = categories.findIndex(t => t.categoryCd == category.categoryId);
     if (idx > -1)
@@ -49,7 +67,7 @@ async function saveCategory(category)
         categories.push(category);
     }
     localStorage.setItem('categories', JSON.stringify(categories));
-
+    return response;
 }
 
 async function cancelCategoryForm()
@@ -116,7 +134,7 @@ async function deleteCategory()
 {
     debugger;
     const categoryId = $('#deletecategoryid').first().val();
-    const result = await deleteAuthorFromServer(categoryId);
+    const result = await deleteCategoryFromServer(categoryId);
     if (result)
     {
         let categories = JSON.parse( localStorage.categories );
