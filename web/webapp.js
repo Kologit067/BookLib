@@ -18,50 +18,68 @@ $(document).ready(async function(){
 
 async function prepare()
 {
+    debugger;
     await fetchStates();
     await fetchAuthors();
     await fetchCategories();
     fillSelects();
 }
 
-function getBookList()
-{
-    //data = loadFromLocalStorage();
-    return data.books;
-}
-
 function getUserList()
 {
-    //data = loadFromLocalStorage();
-    return data.users;
+
+    if (localStorage.usera)
+        return JSON.parse( localStorage.usera );
+    let usera = fetchUsers();
+    return usera;
+}
+
+function getBookList()
+{
+
+    if (localStorage.books)
+        return JSON.parse( localStorage.books );
+    let books = fetchBooks();
+    return books;
 }
 
 function getAuthorList()
 {
-    //data = loadFromLocalStorage();
-    let authors = data.authors;
+
+    if (localStorage.authors)
+        return JSON.parse( localStorage.authors );
+    let authors = fetchAuthors();
     return authors;
 }
 
 function getCategoryList()
 {
-    //data = loadFromLocalStorage();
-    let categories = data.categories;
+
+    if (localStorage.categories)
+        return JSON.parse( localStorage.categories );
+    let categories = fetchCategories();
     return categories;
 }
 
+function getStateList()
+{
 
+    if (localStorage.states)
+        return JSON.parse( localStorage.states );
+    let states = fetchStates();
+    return states;
+}
 
 function createEventHandlers()
 {
  //   debugger;
     $('body').on('click', '.editbook',async function(e){
+        debugger;
         e.preventDefault();
         const id = this.dataset.id;
         await fillBookForm(id);
     });
     $('body').on('click', '.editauthor', async function(e){
-        debugger;
         e.preventDefault();
         const id = this.dataset.id;
         await fillAuthorForm(id);
@@ -77,7 +95,7 @@ function createEventHandlers()
         await fillDeleteBookForm(id);
     });
     $('body').on('click', '.deleteauthor', async function(e){
-        debugger;
+ //       debugger;
         e.preventDefault();
         const id = this.dataset.id;
         await fillDeleteAuthorForm(id);
@@ -98,7 +116,7 @@ function createEventHandlers()
         await fillBookForm(null);
     });
     $('body').on('click', '#addauthor', async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await fillAuthorForm(null);
     });
@@ -106,10 +124,10 @@ function createEventHandlers()
         e.preventDefault();
         await fillCategoryForm(null);
     });
-    $('body').on('click', '#addbookstate',async function(e){
-        e.preventDefault();
-        await fillBookStateForm(null);
-    });
+    // $('body').on('click', '#addbookstate',async function(e){
+    //     e.preventDefault();
+    //     await fillBookStateForm(null);
+    // });
  
     $('body').on('click', '#savebook',async function(e){
         e.preventDefault();
@@ -129,7 +147,8 @@ function createEventHandlers()
 
     $('body').on('click', '#savenewstate',async function(e){
         e.preventDefault();
-        await savenewstateForm();
+        debugger;
+        await saveNewState();
     });
 
     $('body').on('click', '#deleteBookbutton',async function(e){
@@ -209,29 +228,57 @@ function createEventHandlers()
         e.preventDefault();
         await showCategories();
     });
+    $('body').on('click', '#addbookcategory', async function(e){
+        e.preventDefault();
+        $('#bookcategoryeditcore').first().removeClass("hidden");
+    });
+    $('body').on('click', '#addbookcategoryaction', async function(e){
+        e.preventDefault();
+        await addBookToCategory();
+    });
+    $('body').on('click', '#cancelbookcategory', async function(e){
+        e.preventDefault();
+        if( !$('#bookcategoryeditcore').first().hasClass("hidden")){
+            $('#bookcategoryeditcore').first().addClass("hidden");
+        }
+        if( !$('#bookcategoryerror').first().hasClass("hidden")){
+            $('#bookcategoryerror').first().addClass("hidden");
+        }
+    });
+    $('body').on('click', '.deletebookcategory', async function(e){
+        e.preventDefault();
+        debugger;
+        const id = this.dataset.id;
+        await deleteBookCategory(id);
+    });
+
 }
 
 function  fillSelects()
 {
+    debugger;
     let categories = getCategoryList();
-    let bookcategory = $('#bookcategory'); 
+    let bookcategory = $('#editbookcategory'); 
     bookcategory.empty(); 
     for (let i = 0; i < categories.length; i++) {
-        bookcategory.append('<option value="' + categories[i].categoryId + '">' + categories[i].categoryName + '</option>'); 
+        const categoryOption = `<option value="${categories[i].categoryId}">${categories[i].categoryName}</option>`;
+        bookcategory.append(categoryOption); 
     }
 
     let authors = getAuthorList();
-    let bookauthor = $('#bookauthor'); 
+    let bookauthor = $('#editbookauthor'); 
     bookauthor.empty(); 
     for (let i = 0; i < authors.length; i++) {
-        bookauthor.append('<option value="' + authors[i].id + '">' + authors[i].email + '</option>'); 
+        const bookOption = `<option value="${authors[i].authorId}">${authors[i].authorName}</option>`;
+        bookauthor.append(bookOption); 
     }
 
-    let readingStates = JSON.parse( localStorage.readingStates );;
-    newreadingstate = $('#newreadingstate'); 
+    let readingStates = getStateList();
+    newreadingstate = $('#bookreadingstate'); 
     newreadingstate.empty(); 
     for (let i = 0; i < readingStates.length; i++) {
-        newreadingstate.append('<option value="' + readingStates[i].readingStateId + '">' + readingStates[i].stateName + '</option>'); 
+        const stateOption = `<option value="${readingStates[i].readingStateId}">${readingStates[i].stateName}</option>`;
+        newreadingstate.append(stateOption); 
     }
 
 }
@@ -247,11 +294,14 @@ function hiddenAll()
     if( !$('#categorypart').first().hasClass("hidden")){
         $('#categorypart').first().addClass("hidden");
     }
-    if( !$('#categoryeditpart').first().hasClass("hidden")){
-        $('#categoryeditpart').first().addClass("hidden");
+    if( !$('#bookeditpart').first().hasClass("hidden")){
+        $('#bookeditpart').first().addClass("hidden");
     }
     if( !$('#authoreditpart').first().hasClass("hidden")){
         $('#authoreditpart').first().addClass("hidden");
+    }
+    if( !$('#categoryeditpart').first().hasClass("hidden")){
+        $('#categoryeditpart').first().addClass("hidden");
     }
     if( !$('#newstatepart').first().hasClass("hidden")){
         $('#newstatepart').first().addClass("hidden");
@@ -279,7 +329,7 @@ function showLogin()
 
 async function showBooks()
 {
-    debugger;
+//    debugger;
     hiddenAll();
     $('#bookpart').first().removeClass("hidden");
     let books = await fetchBooks();
@@ -304,16 +354,22 @@ async function showAuthors()
     fillAuthorTable(authors);
 }
 
-function showCategoryEdit()
+function showBookEdit()
 {
     hiddenAll();
-    $('#categoryeditpart').first().removeClass("hidden");
+    $('#bookeditpart').first().removeClass("hidden");
 }
 
 function showAuthorEdit()
 {
     hiddenAll();
     $('#authoreditpart').first().removeClass("hidden");
+}
+
+function showCategoryEdit()
+{
+    hiddenAll();
+    $('#categoryeditpart').first().removeClass("hidden");
 }
 
 
@@ -368,6 +424,7 @@ async function applyLogin()
     if (user)
     {
         $("#loginresult").text("");
+        await prepare();
         await showBooks();
     }
     else

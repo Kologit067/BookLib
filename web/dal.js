@@ -19,6 +19,7 @@ async function fetchBooks() {
 async function fetchBookById(bookId) {
     try
     {
+        debugger;
         let option = getOptionForGet()
         let response = await fetch(`http://localhost:3000/api/book/byid/${bookId}`, option); // 
         let data = await response.json();  // 
@@ -36,7 +37,7 @@ async function fetchBookById(bookId) {
 async function fetchAuthors() {
     try
     {
-        debugger;
+ //       debugger;
         let option = getOptionForGet()
         let response = await fetch('http://localhost:3000/api/author/all', option); // 
         let data = await response.json();  // 
@@ -71,7 +72,7 @@ async function fetchAuthorById(authorId) {
 async function fetchCategories() {
     try
     {
-        debugger;
+ //       debugger;
         let option = getOptionForGet()
         let response = await fetch('http://localhost:3000/api/category/all', option); // 
         let data = await response.json();  // 
@@ -99,6 +100,59 @@ async function fetchCategoryById(categoryId) {
     {
         debugger;
         console.error('Error fetching category:', error); // 
+    }
+    return null;
+}
+
+async function getBookCategoryList(bookId) {
+    try
+    {
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/category/bybookid/${bookId}`, option); // 
+        let data = await response.json();  // 
+        localStorage.setItem('bookcategories', JSON.stringify(data));
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching book categories:', error); // 
+    }
+    return null;
+}
+
+async function getBookStateList(bookId) {
+    try
+    {
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/state/historybybookid/${bookId}`, option); // 
+        let data = await response.json();  // 
+        localStorage.setItem('bookstates', JSON.stringify(data));
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching book states:', error); // 
+    }
+    return null;
+}
+
+async function getBookState(bookId) {
+    try
+    {
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/state/bybookid/${bookId}`, option); // 
+        if (response.status && response.status == 404)
+            return {bookId:bookId, readingStateId: null, page: null};
+        let data = await response.json();  // 
+        localStorage.setItem('bookstate', JSON.stringify(data));
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching book state:', error); // 
     }
     return null;
 }
@@ -179,14 +233,14 @@ async function deleteBookFromServer(bookId) {
 async function deleteAuthorFromServer(authorId) {
     try 
     {
-        debugger;
+ //       debugger;
         const option = getOptionForDelete();
         let response = await fetch(`http://localhost:3000/api/author/${authorId}`, option) // 
-        debugger;
+ //       debugger;
         let result = null;
         if (response.status != 400)
         {
-            debugger;
+//            debugger;
             result = await response.json();  // 
         }
         return response;
@@ -202,14 +256,37 @@ async function deleteAuthorFromServer(authorId) {
 async function deleteCategoryFromServer(categoryId) {
     try 
     {
-        debugger;
+//        debugger;
         const option = getOptionForDelete();
         let response = await fetch(`http://localhost:3000/api/category/${categoryId}`, option) // 
-        debugger;
+//        debugger;
         let result = null;
         if (response.status != 400)
         {
-            debugger;
+//            debugger;
+            result = await response.json();  // 
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error(`Error deleting category: ${categoryId}`, error); // 
+        return error;
+    }  
+}
+
+async function deleteBookCategoryFromServer(bookId,categoryId) {
+    try 
+    {
+        debugger;
+        const option = getOptionForDelete();
+        let response = await fetch(`http://localhost:3000/api/book/deleteFromCategory/${bookId}/${categoryId}`, option) // 
+//        debugger;
+        let result = null;
+        if (response.status != 400)
+        {
+//            debugger;
             result = await response.json();  // 
         }
         return response;
@@ -251,18 +328,70 @@ async function login(userName, password) {
     }  
 }
 
-async function saveCategoryToServer (category) {
+async function saveBookToServer (book) {
     try 
     {
         debugger;
         const option = getOptionForPost();
-        option.body = JSON.stringify(category)
-        let response = await fetch(`http://localhost:3000/api/category`, option) // 
+        option.body = JSON.stringify(book)
+        let response = await fetch(`http://localhost:3000/api/book`, option) // 
         debugger;
         let result = null;
         if (response.status != 400)
         {
             debugger;
+            result = await response.json();  // 
+            book.bookId = result.insertId;
+            return book;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error(`Error saving author: ${author.authorId}`, error); // 
+        return error;
+    }  
+}
+
+async function saveAuthorToServer (author) {
+    try 
+    {
+//        debugger;
+        const option = getOptionForPost();
+        option.body = JSON.stringify(author)
+        let response = await fetch(`http://localhost:3000/api/author`, option) // 
+//        debugger;
+        let result = null;
+        if (response.status != 400)
+        {
+//            debugger;
+            result = await response.json();  // 
+            author.authorId = result.insertId;
+            return author;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error(`Error saving author: ${author.authorId}`, error); // 
+        return error;
+    }  
+}
+
+async function saveCategoryToServer (category) {
+    try 
+    {
+//        debugger;
+        const option = getOptionForPost();
+        option.body = JSON.stringify(category)
+        let response = await fetch(`http://localhost:3000/api/category`, option) // 
+//        debugger;
+        let result = null;
+        if (response.status != 400)
+        {
+//            debugger;
             result = await response.json();  // 
             category.categoryId = result.insertId;
             return category;
@@ -278,28 +407,55 @@ async function saveCategoryToServer (category) {
 }
 
 
-async function saveAuthorToServer (author) {
+async function saveBookCategoryToServer(bookCategory) {
     try 
     {
-        debugger;
+//        debugger;
         const option = getOptionForPost();
-        option.body = JSON.stringify(author)
-        let response = await fetch(`http://localhost:3000/api/author`, option) // 
-        debugger;
+        option.body = JSON.stringify(bookCategory)
+        let response = await fetch(`http://localhost:3000/api/book/addToCategory`, option) // 
+//        debugger;
         let result = null;
-        if (response.status != 400)
+        if (response.status == 200)
         {
-            debugger;
+//            debugger;
             result = await response.json();  // 
-            author.authorId = result.insertId;
-            return author;
+            bookCategory.bookCategoryId = result.insertId;
+            return bookCategory;
         }
         return response;
     }
     catch(error)
     {
         debugger;
-        console.error(`Error saving author: ${author.authorId}`, error); // 
+        console.error(`Error saving category: ${category.categoryId}`, error); // 
+        return error;
+    }  
+}
+
+
+async function updateReadingState(newState) {
+    try 
+    {
+//        debugger;
+        const option = getOptionForPost();
+        option.body = JSON.stringify(newState)
+        let response = await fetch(`http://localhost:3000/api/book/updatestate`, option) // 
+//        debugger;
+        let result = null;
+        if (response.status == 200)
+        {
+//            debugger;
+            result = await response.json();  // 
+            newState.bookReadingStateId = result.insertId;
+            return newState;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error(`Error updateing state: ${newState.bookId}`, error); // 
         return error;
     }  
 }

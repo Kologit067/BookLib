@@ -1,71 +1,141 @@
 
 async function fillBookForm(bookId)
 {
+    debugger;
     showBookEdit();
-    if (bookId)
+    if( !$('#bookediterror').first().hasClass("hidden")){
+        $('#bookediterror').first().addClass("hidden");
+    }
+    if( !$('#bookcategoryeditcore').first().hasClass("hidden")){
+        $('#bookcategoryeditcore').first().addClass("hidden");
+    }   
+   if (bookId)
     {
         let book = await fetchBookById(bookId);
         if ( book)
         {
-            $('#bookid').first().val(autbookhor.bookId);
-            $('#booktitle').first().val(book.title);
+            $('#editbookid').first().val(book.bookId);
+            $('#editbookauthor').first().val(book.authorId);
+            $('#editbooktitle').first().val(book.title);
+            $('#editbookdescription').first().val(book.bookDescription);
             $("#bookeditlabel").text("Edit book");
         }
+        $('.bookcategorypart').first().removeClass("hidden");
+        $('.bookhistorypart').first().removeClass("hidden");
     }
     else
     {
-        $('#bookid').first().val('');
-        $('#booktitle').first().val('');
+        if( !$('.bookcategorypart').first().hasClass("hidden")){
+            $('.bookcategorypart').first().addClass("hidden");
+        }
+        if( !$('.bookhistorypart').first().hasClass("hidden")){
+            $('.bookhistorypart').first().addClass("hidden");
+        }
+        $('#editbookid').first().val('');
+        $('#editbooktitle').first().val('');
+        $('#editbookdescription').first().val('');
         $("#bookeditlabel").text("Add book");
     }
+    await fillBookStateForm(bookId);
+    await fillBookStateTable(bookId);
+    await fillBookCategoryTable(bookId);
 }
 
 async function saveBookForm()
 {
-    //debugger;
+    debugger;
     let book = {};
-    book.bookId = $('#bookid').first().val();
-    book.authorId = $('#bookauthorid').first().val();
-    book.title = $('#title').first().val();
-    book.bookDescription = $('#bookdescription').first().val();
+    book.bookId = $('#editbookid').first().val();
+    book.authorId = $('#editbookauthor').first().val();
+    book.title = $('#editbooktitle').first().val();
+    book.bookDescription = $('#editbookdescription').first().val();
 
-    saveBook(book);
-    await showBooks();
-}
-
-function saveBook(book)
-{
-    //data = loadFromLocalStorage();
-    let idx = data.books.findIndex(p => p.id == book.bookId);
-    if (idx > -1) {
-        data.books[idx] = book;
+    response =await saveBook(book);
+    if (response.status)
+    {
+        const message = await response.text();
+        $('#bookediterror').first().removeClass("hidden");
+        $("#bookediterror").text(`Error: ${message}`);
     }
     else
     {
-        data.books.push(book);
+        if( !$('#bookediterror').first().hasClass("hidden"))
+        {
+            $('#bookediterror').first().addClass("hidden");
+        }
+        await showBooks();
     }
-    saveToLocalStorage(data);
+}
+
+async function saveBook(book)
+{
+    let response = await saveBookToServer(book);
+    debugger;
+    if (response)
+    {
+        if (response.status)
+            return response;
+        book = response;
+        let books = JSON.parse( localStorage.books );
+        let idx = books.findIndex(t => t.bookId == book.bookId);
+        if (idx > -1)
+        {
+            books[idx] = book;
+        }
+        else
+        {
+            books.push(book);
+        }
+        localStorage.setItem('books', JSON.stringify(books));
+    
+    }
+    return book;
+
 }
 
 
-async function saveNewStateForm()
+async function saveNewState()
 {
-    let bookReadingState = JSON.parse( localStorage.bookReadingState );
+    debugger;
     let user = JSON.parse( localStorage.user );
     let newState = {};
-    newState.bookReadingStateId = bookReadingState.bookReadingStateId;
-    newState.page = $('#page').first().val();
-    newState.readingState = $('#newreadingstate').first().val();;
-    newState.userId = user.userid;
-    newState.bookId = bookReadingState.bookId;
-    saveNewState(user);
-    await fillBookStateForm(newState.bookReadingStateId);
+    newState.page = $('#statepage').first().val() || 0;
+    newState.readingStateId = $('#bookreadingstate').first().val();
+    newState.userId = user.userId;
+    newState.bookId = $('#editbookid').first().val();
+    let error = null;
+    if ( !newState.readingStateId )
+    {
+        error = 'new state is not assigned.';
+    }
+    else
+    {
+         const response = await updateReadingState(newState);
+        
+        if (response.status)
+        {
+            error = await response.text();
+        }
+        else
+        {
+            await fillBookStateForm(newState.bookId);
+            await fillBookStateTable(newState.bookId);
+        }
+    }
+    if (error)
+    {
+        $('#bookstateerror').first().removeClass("hidden");
+        $("#bookstateerror").text(`Error: ${error}`);
+    }
+    else
+    {
+        if( !$('#bookstateerror').first().hasClass("hidden"))
+        {
+            $('#bookstateerror').first().addClass("hidden");
+        }
+    }
 }
-function saveNewState(newState)
-{
-    updateReadingState(newState);
-    localStorage.setItem('bookReadingState', JSON.stringify(newState));
-}
+
 
 
 async function cancelNewStateForm()
@@ -89,34 +159,52 @@ function fillBookTable(books)
 
 }
 
+async function fillBookStateTable(bookId)
+{
+    var results = $('#bookstatetable');  // 
+    results.empty();
+    let bookStates = await getBookStateList(bookId);
+    results.append('<thead><tr><th>Id</th><th>Old State</th><th>New State</th><th>Old Page</th><th>New Page</th><th>Change Date</th></tr></thead><tbody>')
+    for (let i = 0; i < bookStates.length; i++) {
+        results.append('<tr><td>' + bookStates[i].bookreadingstatehistoryId + 
+            '</td><td>' + bookStates[i].oldStateName +
+            '</td><td>' + bookStates[i].newStateName +
+            '</td><td>' + bookStates[i].oldPage +
+            '</td><td>' + bookStates[i].newPage +
+            '</td><td>' + bookStates[i].changeDate +
+            '</td></tr>'); // 
+    }
+    results.append('</tbody>')
+}
+
+async function fillBookCategoryTable(bookId)
+{
+    let results = $('#bookcategorytable'); 
+    results.empty(); 
+    let bookCategories =await getBookCategoryList(bookId);
+    results.append('<thead><tr><th>Id</th><th>Category Name</th><th>Category Description</th></tr></thead><tbody>')
+    for (let i = 0; i < bookCategories.length; i++) {
+        results.append(`<tr><td>${bookCategories[i].categoryId}</td><td>${bookCategories[i].categoryName}</td>
+            <td>${bookCategories[i].categoryDescription}</td>
+            <td><button class="deletebookcategory" data-id="${bookCategories[i].categoryId}">Delete</button></td></tr>`); 
+    }
+    results.append('</tbody>')
+}
+
 
 async function fillBookStateForm(bookId)
 {
-    showBookStateEdit();
-    let results = $('#bookStateHistorytable'); 
-    results.empty(); 
+//    showBookStateEdit();
     if (bookId) {
-        let book = this.data.books.find(t => t.id == bookId)  ;
-        $('#statebookid').first().val(book.bookId);
-        $('#statebookname').first().val(book.bookName);
-        $('#statebookdescription').first().val(book.bookDescription);
+        let bookState = await getBookState(bookId);
+        $('#bookreadingstate').first().val(bookState.readingStateId);
+        $('#statepage').first().val(bookState.page);
 
-        let bookStates = getBookStateList(bookId);
-        results.append('<thead><tr><th>Id</th><th>OldReadingState</th><th>NewReadingStateId</th><th>OldPage</th><th>NewPage</th><th>ChangeDate</th></tr></thead><tbody>')
-        for (let i = 0; i < bookStates.length; i++) {
-            results.append('<tr><td>' + bookStates[i].oldReadingState + '</td> <td>' + bookStates[i].newReadingStateId +
-                '</td><td>' + bookStates[i].oldPage +
-                '</td><td>' + bookStates[i].newPage +
-                '</td><td>' + bookStates[i].changeDate +
-                '</td></tr>'); // добавляем данные в список
-        }
-        results.append('</tbody>')
     }
     else
     {
-        $('#statebookid').first().val('');
-        $('#statebookname').first().val('');
-        $('#statebookdescription').first().val('');
+        $('#bookreadingstate').first().val('');
+        $('#statepage').first().val('');
     }
 }
 
@@ -175,4 +263,45 @@ async function deleteBook()
 
     await showBooks();
 }
+
+
+async function addBookToCategory()
+{
+    debugger;
+    let bookCategory = {};
+    bookCategory.bookId = $('#editbookid').first().val();
+    bookCategory.categoryId = $('#editbookcategory').first().val();
+
+    let response = await saveBookCategoryToServer(bookCategory);
+
+    if (response.status)
+    {
+        const message = await response.text();
+        $('#bookcategoryerror').first().removeClass("hidden");
+        $("#bookcategoryerror").text(`Error: ${message}`);
+    }
+    else
+    {
+        if( !$('#bookcategoryerror').first().hasClass("hidden"))
+        {
+            $('#bookcategoryerror').first().addClass("hidden");
+        }
+        if( !$('#bookcategoryeditcore').first().hasClass("hidden"))
+        {
+            $('#bookcategoryeditcore').first().addClass("hidden");
+        }
+        await fillBookCategoryTable(bookCategory.bookId);
+    }
+}
+
+
+async function deleteBookCategory(categoryId)
+{
+    debugger;
+    const bookId = $('#editbookid').first().val();
+    const result = await deleteBookCategoryFromServer(bookId, categoryId);
+
+    await fillBookCategoryTable(bookId);
+}
+
 

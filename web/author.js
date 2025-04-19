@@ -1,10 +1,3 @@
-function getAuthorList()
-{
-    //data = loadFromLocalStorage();
-    let authors = data.authors();
-    return authors;
-}
-
 
 async function saveAuthorForm()
 {
@@ -97,6 +90,7 @@ async function cancelAuthorForm()
 
 async function fillAuthorForm(authorId)
 {
+    debugger;
     showAuthorEdit();
     if( !$('#authorediterror').first().hasClass("hidden")){
         $('#authorediterror').first().addClass("hidden");

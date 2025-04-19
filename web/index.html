@@ -25,33 +25,6 @@
         </table>
     </div>
 
-    <div class='hidden part' id="editbookpart">
-        <h4 id="editbooklabel">Edit Book</h4>
-        <table id="bookedit">
-            <tr>
-                <td><label>Book Id</label></td>
-                <td><input id="bookid" readonly type="text"></td>
-            </tr>
-            <tr>
-                <td><label>Author</label></td>
-                <td><input id="author" type="text"></td>
-            </tr>
-            <tr>
-                <td><label>Title</label></td>
-                <td><input id="title" type="text"></td>
-            </tr>
-            <tr>
-                <td><label>Book Description</label></td>
-                <td><input id="bookDescription" type="text"></td>
-            </tr>
-            <tr>
-                <td><button id="savebook">Save</button></td>
-                <td><button id="cancelbook">Cancel</button></td>
-            </tr>
-        </table>
-
-    </div>
-
     
     <div class='hidden part' id="authorpart">
         <h3 class="partheader">Authors</h3>
@@ -69,6 +42,7 @@
         </table>
     </div>
 
+    <!-- //--------------  edit forms -----------------------------------     -->
     <div class='hidden part' id="categoryeditpart">
         <h3 id="editcategorylabel">Edit Category</h3>
         <input id="categoryid" hidden="" type="text">
@@ -105,25 +79,72 @@
         </table>
     </div>
 
-    <div class='hidden part' id="newstatepart">
-        <h3 id="newstatelabel">New State</h3>
-        <table id="newstatetable">
+    <div class='hidden part' id="bookeditpart">
+        <h3 id="bookeditlabel">Edit Book</h3>
+        <input class='hidden' id="editbookid" type="text">
+        <div class="errortext" id="bookediterror"></div>
+        <table id="bookeditcore">
             <tr>
-                <td><label>Page Number</label></td>
-                <td><input id="page" type="text"></td>
+                <td><label>Book Author</label></td>
+                <td><select id="editbookauthor" ></td>
             </tr>
             <tr>
-                <td><label>Reading State</label></td>
-                <td><select id="newreadingstate" ></select>></td>
+                <td><label>Book Title</label></td>
+                <td><input size="70" id="editbooktitle" type="text"></td>
             </tr>
             <tr>
-                <td><button id="saveNewState">Save</button></td>
-                <td><button id="cancelnewstate">Cancel</button></td>
+                <td><label>Book Description</label></td>
+                <td><input size="70" id="editbookdescription" type="text"></td>
+            </tr>
+            <tr>
+                <td><button id="savebook">Save</button></td>
+                <td><button id="cancelbook">Cancel</button></td>
             </tr>
         </table>
-
+        <div class="bookdetails" id="bookdetails">
+            <div class="flex-item bookcategorypart">
+                <div class="partheader">
+                    <h4 class="categorybookheader">Categories of Book</h4>
+                    <button class="addbutton" id="addbookcategory">Add Category</button>
+                    </div>
+                <table id="bookcategorytable">
+                </table>
+                <table id="bookcategoryeditcore">
+                    <tr>
+                        <td><label>Add Book to Category</label></td>
+                        <td><select  id="editbookcategory" ></td>
+                    </tr>
+                    <tr>
+                        <td><button id="addbookcategoryaction">Add</button></td>
+                        <td><button id="cancelbookcategory">Cancel</button></td>
+                    </tr>
+                </table>
+                <div class="errortext" id="bookcategoryerror"></div>
+            </div>
+            <div class="flex-item bookhistorypart">
+                <h4 class="partheader">Reading state</h4>
+                <table id="newstatetable">
+                    <tr>
+                        <td><label>Page Number</label></td>
+                        <td><input id="statepage" type="text"></td>
+                    </tr>
+                    <tr>
+                        <td><label>Reading State</label></td>
+                        <td><select id="bookreadingstate" ></select></td>
+                    </tr>
+                    <tr>
+                        <td><button id="savenewstate">Update state</button></td>
+                    </tr>
+                </table>
+                <div class="errortext" id="bookstateerror"></div>
+                <table id="bookstatetable">
+                </table>
+            </div>
+        </div>
     </div>
-    
+
+
+<!-- //--------------  delete forms -----------------------------------     -->
     <div class='hidden part' id="bookdeletepart">
         <h3 id="bookdeletelabel">You are going to delete Book.</h3>
         <input class='hidden' id="deletebookrid" type="text">
@@ -193,7 +214,7 @@
         </table>
     </div>
 
-    
+    <!-- //--------------  login forms -----------------------------------     -->
     <div class='hidden part' id="login">
         <h4 id="loginlabel">Login</h4>
         <table id="loginedit">

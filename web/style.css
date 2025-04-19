@@ -106,5 +106,48 @@ tr {
 }
 
 .partheader {
-    margin-left: 10px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+.bookdetails {
+    display: flex;
+    margin-top: 10px;
+}
+
+.flex-item {
+    margin: 5px;
+    padding: 2px;
+    background-color: #BBFFE7;
+}
+
+.bookcategorypart {
+    min-width: 500px;
+}
+
+.bookhistorypart {
+    min-width: 500px;
+}
+
+#addbookcategory, .categorybookheader {
+    display: inline;
+}
+
+th {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+/* 
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  } */
+
+#bookcategorytable {
+    margin-top: 10px;
+}
+
+#bookstatetable {
+    margin-top: 20px;
 }
