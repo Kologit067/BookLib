@@ -87,17 +87,21 @@ exports.register = async function(request, response)
             return;
         }
         user = {
+            userName : login.userName,
+            password : login.password,
             token : crypto.randomUUID(),
             role : 'User'
         };
         
         let results = await connection.promise().query(`INSERT INTO user(UserName,Password,IsAdmin,Role,Token) 
             VALUES('${login.userName}', '${login.password}', 0, '${user.role}', '${user.token}')`);
-        response.json(results);
+        user.userId = results[0].insertId;
+        response.json(user);
 
     }
     catch (err) {
         console.log(err);
+        response.status(400).send(err);
     };
     
 }

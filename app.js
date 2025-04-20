@@ -5,6 +5,7 @@ const bookRouter = require("./routes/bookRouter.js");
 const authorRouter = require("./routes/authorRouter.js");
 const stateRouter = require("./routes/stateRouter.js");
 const categoryRouter = require("./routes/categoryRouter.js");
+const userRouter = require("./routes/userRouter.js");
 const authRouter = require("./routes/authRouter.js");
 
 app.use(express.static("web"));
@@ -18,6 +19,7 @@ app.use("/api/book", bookRouter);
 app.use("/api/author", authorRouter);
 app.use("/api/state", stateRouter);
 app.use("/api/category", categoryRouter);
+app.use("/api/user", userRouter);
 
 app.get("/books", function(request, response){
      

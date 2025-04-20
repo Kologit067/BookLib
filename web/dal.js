@@ -104,6 +104,28 @@ async function fetchCategoryById(categoryId) {
     return null;
 }
 
+async function fetchUsers() {
+    try
+    {
+        debugger;
+        let option = getOptionForGet()
+        let response = await fetch('http://localhost:3000/api/user/all', option); // 
+        if (response.status == 200)
+        {
+            let data = await response.json();  // 
+            localStorage.setItem('users', JSON.stringify(data));
+            return data;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching users:', error); // 
+        return null;
+    }  
+}
+
 async function getBookCategoryList(bookId) {
     try
     {
@@ -316,6 +338,35 @@ async function login(userName, password) {
         let response = await fetch('http://localhost:3000/api/login', option) // 
         let user = null;
         if (response.status != 400)
+            user = await response.json();  // 
+        localStorage.setItem('user', JSON.stringify(user));
+        return user;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching states:', error); // 
+        return null;
+    }  
+}
+
+async function register(userName, password) {
+    try 
+    {
+//        debugger;
+        const option = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userName : userName,
+                password : password
+            })
+          }
+        let response = await fetch('http://localhost:3000/api/register', option) // 
+        let user = null;
+        if (response.status == 200)
             user = await response.json();  // 
         localStorage.setItem('user', JSON.stringify(user));
         return user;

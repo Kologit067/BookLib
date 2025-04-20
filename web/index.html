@@ -13,6 +13,7 @@
           <li class="topmenuitem"><a id="booksref" href="#">Books</a></li>
           <li class="topmenuitem"><a id="authorsref" href="#">Authors</a></li>
           <li class="topmenuitem"><a id="categoriesref" href="#">Categories</a></li>
+          <li class="topmenuitem"><a id="usersref" href="#">Users</a></li>
         </ul>
       </nav>
       
@@ -34,11 +35,16 @@
 
     </div>
 
-
     <div class='hidden part' id="categorypart">
         <h3 class="partheader">Categories</h3>
         <button class="addbutton" id="addcategory">Add Category</button>
         <table id="categorytable">
+        </table>
+    </div>
+
+    <div class='hidden part' id="userpart">
+        <h3 class="partheader">Users</h3>
+        <table id="usertable">
         </table>
     </div>
 
@@ -216,8 +222,11 @@
 
     <!-- //--------------  login forms -----------------------------------     -->
     <div class='hidden part' id="login">
-        <h4 id="loginlabel">Login</h4>
-        <table id="loginedit">
+        <div>
+            <h4 id="loginlabel">Login</h4>
+            <a id="regisaterref" href="#">Register</a>
+        </div>
+       <table id="loginedit">
             <tr>
                 <td><label>Name</label></td>
                 <td><input id="loginname" type="text"></td>
@@ -237,11 +246,38 @@
 
     </div>
 
+    <div class='hidden part' id="registerForm">
+        <h4 id="registerlabel">Register</h4>
+        <table id="registeredit">
+            <tr>
+                <td><label>Name</label></td>
+                <td><input id="registername" type="text"></td>
+            </tr>
+            <tr>
+                <td><label>Password</label></td>
+                <td><input id="registerpassword" type="text"></td>
+            </tr>
+            <tr>
+                <td><label>Confirm Password</label></td>
+                <td><input id="registerconfirmpassword" type="text"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><div id="registerresult"></div></td>
+            </tr>           
+            <tr>
+                <td><button id="applyregister">Login</button></td>
+                <td><button id="cancelregister">Cancel</button></td>
+            </tr>
+        </table>
+
+    </div>
+
     <script defer src="webapp.js"></script>
     <script defer src="dal.js"></script>    
     <script defer src="book.js"></script>
     <script defer src="category.js"></script>
     <script defer src="author.js"></script>
+    <script defer src="user.js"></script>
 
 
   </body>

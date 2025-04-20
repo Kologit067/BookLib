@@ -25,15 +25,6 @@ async function prepare()
     fillSelects();
 }
 
-function getUserList()
-{
-
-    if (localStorage.usera)
-        return JSON.parse( localStorage.usera );
-    let usera = fetchUsers();
-    return usera;
-}
-
 function getBookList()
 {
 
@@ -216,26 +207,47 @@ function createEventHandlers()
         e.preventDefault();
         await applyLogin();
     });
+
+    $('body').on('click', '#applyregister', async function(e){
+        e.preventDefault();
+        await applyRegister();
+    });
+
+    $('body').on('click', '#regisaterref', function(e){
+        e.preventDefault();
+        showRegister();
+    });
+
     $('body').on('click', '#booksref', async function(e){
         e.preventDefault();
         await showBooks();
     });
+
     $('body').on('click', '#authorsref', async function(e){
         e.preventDefault();
         await showAuthors();
     });
+
     $('body').on('click', '#categoriesref', async function(e){
         e.preventDefault();
         await showCategories();
     });
+
+    $('body').on('click', '#usersref', async function(e){
+        e.preventDefault();
+        await showUsers();
+    });
+
     $('body').on('click', '#addbookcategory', async function(e){
         e.preventDefault();
         $('#bookcategoryeditcore').first().removeClass("hidden");
     });
+
     $('body').on('click', '#addbookcategoryaction', async function(e){
         e.preventDefault();
         await addBookToCategory();
     });
+
     $('body').on('click', '#cancelbookcategory', async function(e){
         e.preventDefault();
         if( !$('#bookcategoryeditcore').first().hasClass("hidden")){
@@ -245,6 +257,7 @@ function createEventHandlers()
             $('#bookcategoryerror').first().addClass("hidden");
         }
     });
+
     $('body').on('click', '.deletebookcategory', async function(e){
         e.preventDefault();
         debugger;
@@ -294,6 +307,9 @@ function hiddenAll()
     if( !$('#categorypart').first().hasClass("hidden")){
         $('#categorypart').first().addClass("hidden");
     }
+    if( !$('#userpart').first().hasClass("hidden")){
+        $('#userpart').first().addClass("hidden");
+    }
     if( !$('#bookeditpart').first().hasClass("hidden")){
         $('#bookeditpart').first().addClass("hidden");
     }
@@ -318,6 +334,9 @@ function hiddenAll()
     if( !$('#categorydeletepart').first().hasClass("hidden")){
         $('#categorydeletepart').first().addClass("hidden");
     }
+    if( !$('#registerForm').first().hasClass("hidden")){
+        $('#registerForm').first().addClass("hidden");
+    }
     
 }
 
@@ -325,6 +344,12 @@ function showLogin()
 {
     hiddenAll();
     $('#login').first().removeClass("hidden");
+}
+
+function showRegister()
+{
+    hiddenAll();
+    $('#registerForm').first().removeClass("hidden");
 }
 
 async function showBooks()
@@ -343,6 +368,15 @@ async function showCategories()
     $('#categorypart').first().removeClass("hidden");
     let categories = await fetchCategories();
     fillCategoryTable(categories);
+}
+
+async function showUsers()
+{
+    debugger;
+    hiddenAll();
+    $('#userpart').first().removeClass("hidden");
+    let users = await fetchUsers();
+    fillUserTable(users);
 }
 
 async function showAuthors()
@@ -417,7 +451,7 @@ function loadFromLocalStorage()
 
 async function applyLogin()
 {
-//    debugger;
+    debugger;
     const userName = $('#loginname').first().val();
     const password = $('#loginpassword').first().val();
     let user = await login(userName, password);
@@ -430,5 +464,23 @@ async function applyLogin()
     else
     {
         $("#loginresult").text("Wrong user name or password");
+    }
+}
+
+async function applyRegister()
+{
+    debugger;
+    const userName = $('#registername').first().val();
+    const password = $('#registerpassword').first().val();
+    let user = await register(userName, password);
+    if (user)
+    {
+        $("#registerresult").text("");
+        await prepare();
+        await showBooks();
+    }
+    else
+    {
+        $("#registerresult").text("Register error");
     }
 }

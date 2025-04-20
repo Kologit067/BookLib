@@ -75,7 +75,6 @@ async function cancelCategoryForm()
     await showCategories();
 }
 
-
 function fillCategoryTable(categories)
 {
     debugger;

@@ -72,7 +72,7 @@ td {
 }
 
 
-table#booktable td,table#authortable td,table#categorytable td {
+table#booktable td,table#authortable td,table#categorytable td, table#usertable td {
     background-color: #EEFAFA;
 }
 
@@ -130,8 +130,12 @@ tr {
     min-width: 500px;
 }
 
-#addbookcategory, .categorybookheader {
+#addbookcategory, .categorybookheader, #loginlabel {
     display: inline;
+}
+
+#regisaterref {
+    margin-left: 150px;
 }
 
 th {
