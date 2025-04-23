@@ -74,10 +74,13 @@ function fillAuthorTable(authors)
  
     results.append('<thead><tr><th>Id</th><th>Name</th><th>Last Update</th><th></th></tr></thead><tbody>')
     for (let i = 0; i < authors.length; i++) {
-        results.append('<tr><td>' + authors[i].authorId + '</td> <td>' + authors[i].authorName +
-            '</td><td>' + authors[i].lastUpdate +
-            '</td><td><button class="editauthor"+ data-id="' + authors[i].authorId + '">Edit</button>' +
-            '</td><td><button class="deleteauthor"+ data-id="' + authors[i].authorId + '">Delete</button></td><tr/>'); 
+        results.append(`<tr><td>${authors[i].authorId}</td> 
+            <td>${authors[i].authorName}</td>
+            <td>${authors[i].lastUpdate}</td>
+            <td><button class="editauthor" data-id="${authors[i].authorId}">Edit</button></td>
+            <td><button class="deleteauthor"+ data-id="${authors[i].authorId}">Delete</button></td>
+            <td><button class="showauthorbooks"+ data-id="${authors[i].authorId}">Show books</button></td>
+            <tr/>`); 
     }
     results.append('</tbody>')
 }

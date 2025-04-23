@@ -150,13 +150,33 @@ function fillBookTable(books)
     results.empty();                // clear element
     results.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th><th></th></tr></thead><tbody>')
     for (var i = 0; i < books.length; i++) {
-        results.append('<tr><td>' + books[i].bookId + '</td> <td>' + books[i].authorName +
-            '</td> <td>' + books[i].title +
-            '</td> <td>' + books[i].userName +
-            '</td> <td>' + books[i].lastUpdate +
-            '</td><td><button class="editbook"+ data-id="' + books[i].bookId + '">Edit</button></td></tr>'); // add row
+        results.append(`<tr><td>${books[i].bookId}</td> 
+            <td>${books[i].authorName}</td> 
+            <td>${books[i].title}</td> 
+            <td>${books[i].userName}</td> 
+            <td>${books[i].lastUpdate}</td>
+            <td><button class="editbook" data-id="${books[i].bookId}">Edit</button></td>
+            <td><button class="deletebook" data-id="${books[i].bookId}">Delete</button></td>
+            </tr>`); // add row
     }
+}
 
+function fillBookTableToDiv(books, div)
+{
+    div.first().removeClass("hidden");
+    div.empty();                // clear element
+    if (books && books.length && books.length > 0)
+    {
+        div.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th><th></th></tr></thead><tbody>')
+        for (var i = 0; i < books.length; i++) {
+            div.append(`<tr><td>${books[i].bookId}</td> 
+            <td>${books[i].authorName}</td> 
+            <td>${books[i].title}</td> 
+            <td>${books[i].userName}</td> 
+            <td>${books[i].lastUpdate}</td>
+            </tr>`); // add row
+        }
+    }
 }
 
 async function fillBookStateTable(bookId)
@@ -250,15 +270,28 @@ async function fillDeleteBookForm(bookId)
 async function deleteBook()
 {
     debugger;
-    const bookId = $('#deletebookId').first().val();
+    const bookId = $('#deletebookid').first().val();
     const result = await deleteBookFromServer(bookId);
     if (result)
     {
-        let books = JSON.parse( localStorage.books );
-        books = books.filter(function(item) {
-            item.bookId != bookId
-        });
-        localStorage.setItem('books', JSON.stringify(books));
+        if (result.status && result.status != 200)
+        {
+            const message = await result.text();
+            $('#bookdeleteissue').first().removeClass("hidden");
+            $("#bookdeleteissuetext").text(`Error: ${message}`);
+        }
+        else
+        {
+            let books = JSON.parse( localStorage.books );
+            books = books.filter(function(item) {
+                item.bookId != bookId
+            });
+            localStorage.setItem('books', JSON.stringify(books));
+            if( !$('#bookdeleteissue').first().hasClass("hidden"))
+            {
+                $('#bookdeleteissue').first().addClass("hidden");
+            }
+        }
     }
 
     await showBooks();
@@ -304,4 +337,19 @@ async function deleteBookCategory(categoryId)
     await fillBookCategoryTable(bookId);
 }
 
+async function applyFilter()
+{
+    const filerTitle = $('#filertitle').first().val().toLowerCase();
+    let books = await getBookList();
+    books = books.filter(item => item.title.toLowerCase().indexOf(filerTitle) >= 0);
+    fillBookTable(books);
+}
+
+
+async function resetFilter()
+{
+    $('#filertitle').first().val('');
+    let books = await getBookList();
+    fillBookTable(books);
+}
 

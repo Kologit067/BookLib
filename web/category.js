@@ -80,13 +80,16 @@ function fillCategoryTable(categories)
     debugger;
     var results = $('#categorytable');  // 
     results.empty();                    // clear element
-    results.append('<thead><tr><th>Id</th><th>Name</th><th>Description</th><th>Last Update</th><th></th></tr></thead><tbody>')
+    results.append('<thead><tr><th>Id</th><th>Name</th><th>Description</th><th>Last Update</th></tr></thead><tbody>')
     for (var i = 0; i < categories.length; i++) {
-        results.append('<tr><td>' + categories[i].categoryId + '</td> <td>' + categories[i].categoryName +
-            '</td> <td>' + categories[i].categoryDescription +
-            '</td> <td>' + categories[i].lastUpdate +
-            '</td><td><button class="editcategory"+ data-id="' + categories[i].categoryId + '">Edit</button>' +
-            '</td><td><button class="deletecategory"+ data-id="' + categories[i].categoryId + '">Delete</button></td><tr/>'); 
+        results.append( `<tr><td>${categories[i].categoryId}</td> 
+            <td>${categories[i].categoryName}</td> 
+            <td>${categories[i].categoryDescription}</td> 
+            <td>${categories[i].lastUpdate}</td>
+            <td><button class="editcategory" data-id="${categories[i].categoryId}">Edit</button></td>
+            <td><button class="deletecategory" data-id="${categories[i].categoryId}">Delete</button></td>
+            <td><button class="showcategorybooks" data-id="${categories[i].categoryId}">Show books</button></td>
+            <tr/>`); 
     }
 
 }

@@ -19,14 +19,21 @@ li.topmenuitem {
     font: 115%/1.5 FontFamily
 }
 
-#login {
+#login, #registerdiv {
     background-color: #55AABB;
     margin-top: 50px;
     margin-left: 200px;
-    width: 300px;
     padding-left: 20px;
     padding-top: 5px;
     padding-bottom: 10px;
+}
+
+#login {
+    width: 300px;
+}
+
+#registerdiv {
+    width: 400px;
 }
 
 #booktpart {
@@ -116,6 +123,10 @@ tr {
     margin-top: 10px;
 }
 
+.filter-panel {
+    display: flex;
+}
+
 .flex-item {
     margin: 5px;
     padding: 2px;
@@ -154,4 +165,37 @@ table, th, td {
 
 #bookstatetable {
     margin-top: 20px;
+}
+
+
+.field-validation-error {
+    color: #b94a48;
+}
+  
+.field-validation-valid {
+    display: none;
+}
+  
+input.input-validation-error {
+    border: 1px solid #b94a48;
+}
+  
+input[type="checkbox"].input-validation-error {
+    border: 0 none;
+}
+  
+.validation-summary-errors {
+    color: #b94a48;
+}
+  
+.validation-summary-valid {
+    display: none;
+}
+
+#authorbooktable, #categorybooktable, #userbooktable {
+    margin-top: 15px;
+}
+
+#addbook {
+    margin-right: 100px;
 }

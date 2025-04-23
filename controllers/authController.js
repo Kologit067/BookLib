@@ -76,6 +76,11 @@ exports.register = async function(request, response)
   
     const connection = mysql.createConnection(connectionOption);
     debugger;
+    if (!login.userName || login.password)
+    {
+        response.status(400).send(`User name or password is not correct.`);
+        return;
+    }
     connection.connect();
     const sqlSelect = `SELECT * FROM user WHERE UserName = '${login.userName}'`;
     try {

@@ -34,6 +34,58 @@ async function fetchBookById(bookId) {
     return null;
 }
 
+async function fetchBooksByAuthor(authorId) {
+    try
+    {
+        debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/book/byauthor/${authorId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching author books:', error); // 
+    }
+    return null;
+}
+
+
+async function fetchBooksByCategory(categoryId) {
+    try
+    {
+        debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/book/bycategory/${categoryId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching category books:', error); // 
+    }
+    return null;
+}
+
+async function fetchBooksByUser(userId) {
+    try
+    {
+        debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`http://localhost:3000/api/book/byuser/${userId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching author books:', error); // 
+    }
+    return null;
+}
+
 async function fetchAuthors() {
     try
     {
