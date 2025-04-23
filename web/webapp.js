@@ -1,20 +1,12 @@
 var data = null;
+window.urlOption = {
+    host: "http://localhost:3001"
+};
 
 $(document).ready(async function(){
     debugger;
     $('form').validate();
-    // const loadScript = (src) => {
-    //     return new Promise((resolve, reject) => {
-    //         const script = document.createElement('script');
-    //         script.src = src;
-    //         script.onload = resolve;
-    //         script.onerror = reject;
-    //         document.head.appendChild(script);
-    //     });
-    // };
 
-    // await loadScript("https://cdn.jsdelivr.net/jquery.validation/1.19.3/jquery.validate.min.js");
-    // await loadScript("https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js");
     createEventHandlers();
     window.user = JSON.parse(sessionStorage.getItem('user'));
     
@@ -24,15 +16,7 @@ $(document).ready(async function(){
     } else {
         showLogin();
     }
-
-    // let script = document.createElement('script');
-    // script.src = "https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js";
-    // script.onload = async function() {
-
-    // };
-    
-    //document.head.appendChild(script);
-    
+  
 });
 
 async function prepare()
@@ -527,11 +511,6 @@ async function applyLogin()
     debugger;
     const userName = $('#loginname').first().val();
     const password = $('#loginpassword').first().val();
-    const confirmPassword = $('#registerconfirmpassword').first().val();
-    if (password !== confirmPassword)
-    {
-        $("#loginresult").text("Passwords are different");
-    }
     if (userName && password)
     {
         let user = await login(userName, password);
@@ -553,6 +532,11 @@ async function applyRegister()
     debugger;
     const userName = $('#registername').first().val();
     const password = $('#registerpassword').first().val();
+    const confirmPassword = $('#registerconfirmpassword').first().val();
+    if (password !== confirmPassword)
+        {
+            $("#loginresult").text("Passwords are different");
+        }
     if (userName && password)
     {
         let user = await register(userName, password);
