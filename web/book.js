@@ -50,20 +50,23 @@ async function saveBookForm()
     book.title = $('#editbooktitle').first().val();
     book.bookDescription = $('#editbookdescription').first().val();
 
-    response =await saveBook(book);
-    if (response.status)
+    if (book.title && book.bookDescription)
     {
-        const message = await response.text();
-        $('#bookediterror').first().removeClass("hidden");
-        $("#bookediterror").text(`Error: ${message}`);
-    }
-    else
-    {
-        if( !$('#bookediterror').first().hasClass("hidden"))
+        response =await saveBook(book);
+        if (response.status)
         {
-            $('#bookediterror').first().addClass("hidden");
+            const message = await response.text();
+            $('#bookediterror').first().removeClass("hidden");
+            $("#bookediterror").text(`Error: ${message}`);
         }
-        await showBooks();
+        else
+        {
+            if( !$('#bookediterror').first().hasClass("hidden"))
+            {
+                $('#bookediterror').first().addClass("hidden");
+            }
+            await showBooks();
+        }
     }
 }
 

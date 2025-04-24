@@ -5,20 +5,24 @@ async function saveAuthorForm()
     
     author.authorId = $('#authorid').first().val();
     author.authorName = $('#authorname').first().val();
-    let response = await saveAuthor(author);
-    if (response.status)
+
+    if (author.authorName)
     {
-        const message = await response.text();
-        $('#authorediterror').first().removeClass("hidden");
-        $("#authorediterror").text(`Error: ${message}`);
-    }
-    else
-    {
-        if( !$('#authorediterror').first().hasClass("hidden"))
-            {
-            $('#authorediterror').first().addClass("hidden");
+        let response = await saveAuthor(author);
+        if (response.status)
+        {
+            const message = await response.text();
+            $('#authorediterror').first().removeClass("hidden");
+            $("#authorediterror").text(`Error: ${message}`);
         }
-        await showAuthors();
+        else
+        {
+            if( !$('#authorediterror').first().hasClass("hidden"))
+                {
+                $('#authorediterror').first().addClass("hidden");
+            }
+            await showAuthors();
+        }
     }
 }
 

@@ -33,19 +33,22 @@ async function saveCategoryForm()
     category.categoryId = $('#categoryid').first().val();
     category.categoryName = $('#categoryname').first().val();
     category.categoryDescription = $('#categorydescription').first().val();
-    let response = await saveCategory(category);
-    if (response.status)
+    if (category.categoryName && category.categoryDescription)
     {
-        const message = await response.text();
-        $('#categoryediterror').first().removeClass("hidden");
-        $("#categoryediterror").text(`Error: ${message}`);
-    }
-    else
-    {
-        if( !$('#categoryediterror').first().hasClass("hidden")){
-            $('#categoryediterror').first().addClass("hidden");
+        let response = await saveCategory(category);
+        if (response.status)
+        {
+            const message = await response.text();
+            $('#categoryediterror').first().removeClass("hidden");
+            $("#categoryediterror").text(`Error: ${message}`);
         }
-        await showCategories();
+        else
+        {
+            if( !$('#categoryediterror').first().hasClass("hidden")){
+                $('#categoryediterror').first().addClass("hidden");
+            }
+            await showCategories();
+        }
     }
 }
 

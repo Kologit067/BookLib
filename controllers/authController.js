@@ -37,7 +37,7 @@ exports.login = async function(request, response)
     const login = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+//    debugger;
     connection.connect();
     const sqlSelect = `SELECT * FROM user WHERE UserName = '${login.userName}' AND Password = '${login.password}'`;
     try {

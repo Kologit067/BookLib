@@ -147,21 +147,6 @@ function createEventHandlers()
     //     await fillBookStateForm(null);
     // });
  
-    $('body').on('click', '#savebook',async function(e){
-        e.preventDefault();
-        await saveBookForm(null);
-    });
-
-    $('body').on('click', '#saveauthor',async function(e){
-        debugger;
-        e.preventDefault();
-        await saveAuthorForm();
-    });
-
-    $('body').on('click', '#savecategory',async function(e){
-        e.preventDefault();
-        await saveCategoryForm();
-    });
 
     $('body').on('click', '#savenewstate',async function(e){
         e.preventDefault();
@@ -308,6 +293,22 @@ function createEventHandlers()
         await resetFilter();
     });
 
+    // $('body').on('click', '#savebook',async function(e){
+    //     e.preventDefault();
+    //     await saveBookForm(null);
+    // });
+
+    // $('body').on('click', '#saveauthor',async function(e){
+    //     debugger;
+    //     e.preventDefault();
+    //     await saveAuthorForm();
+    // });
+
+    // $('body').on('click', '#savecategory',async function(e){
+    //     e.preventDefault();
+    //     await saveCategoryForm();
+    // });
+
     const loginForm = document.getElementById("loginform");
     loginForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
@@ -320,6 +321,27 @@ function createEventHandlers()
         e.preventDefault();
         debugger;
         await applyRegister();
+    });
+
+    const bookEditForm = document.getElementById("bookeditform");
+    bookEditForm.addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        debugger;
+        await saveBookForm(null);
+    });
+
+    const authorEditForm = document.getElementById("authoreditform");
+    authorEditForm.addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        debugger;
+        await saveAuthorForm();
+    });
+
+    const categoryEditForm = document.getElementById("categoryeditform");
+    categoryEditForm.addEventListener("submit", async (e)=>{
+        e.preventDefault();
+        debugger;
+        await saveCategoryForm();
     });
 
 }
@@ -534,9 +556,9 @@ async function applyRegister()
     const password = $('#registerpassword').first().val();
     const confirmPassword = $('#registerconfirmpassword').first().val();
     if (password !== confirmPassword)
-        {
+    {
             $("#loginresult").text("Passwords are different");
-        }
+    }
     if (userName && password)
     {
         let user = await register(userName, password);
