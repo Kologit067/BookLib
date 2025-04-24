@@ -4,7 +4,7 @@ window.urlOption = {
 };
 
 $(document).ready(async function(){
-    debugger;
+//   debugger;
     $('form').validate();
 
     createEventHandlers();
@@ -21,11 +21,18 @@ $(document).ready(async function(){
 
 async function prepare()
 {
-    debugger;
+//    debugger;
     await fetchStates();
     await fetchAuthors();
     await fetchCategories();
     fillSelects();
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    if (user.role != 'Admin')
+    {
+        if( !$('#usersref').first().hasClass("hidden")){
+            $('#usersref').first().addClass("hidden");
+        }
+    }
 }
 
 async function getBookList()
@@ -68,7 +75,7 @@ function createEventHandlers()
 {
  //   debugger;
     $('body').on('click', '.editbook',async function(e){
-        debugger;
+ //       debugger;
         e.preventDefault();
         const id = this.dataset.id;
         await fillBookForm(id);
@@ -85,7 +92,7 @@ function createEventHandlers()
     });
     $('body').on('click', '.deletebook',async function(e){
         e.preventDefault();
-        debugger;
+//        debugger;
         const id = this.dataset.id;
         await fillDeleteBookForm(id);
     });
@@ -109,7 +116,7 @@ function createEventHandlers()
     });
     $('body').on('click', '.showcategorybooks',async function(e){
         e.preventDefault();
-        debugger;
+//        debugger;
         const id = this.dataset.id;
         let div = $('#categorybooktable');  // 
         let categorybooks = await fetchBooksByCategory(id);
@@ -117,7 +124,7 @@ function createEventHandlers()
     });
     $('body').on('click', '.showuserbooks',async function(e){
         e.preventDefault();
-        debugger;
+ //       debugger;
         const id = this.dataset.id;
         let div = $('#userbooktable');  // 
         let userbooks = await fetchBooksByUser(id);
@@ -150,24 +157,24 @@ function createEventHandlers()
 
     $('body').on('click', '#savenewstate',async function(e){
         e.preventDefault();
-        debugger;
+//        debugger;
         await saveNewState();
     });
 
     $('body').on('click', '#deletebookbutton',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await deleteBook();
     });
 
     $('body').on('click', '#deleteauthorbutton',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await deleteAuthor();
     });
 
     $('body').on('click', '.deletecategoryexec', async function(e){
-        debugger;
+ //       debugger;
         e.preventDefault();
         await deleteCategory();
     });
@@ -177,7 +184,7 @@ function createEventHandlers()
         await cancelBookForm(null);
     });
     $('body').on('click', '#cancelauthor', async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await cancelAuthorForm();
     });
@@ -192,25 +199,25 @@ function createEventHandlers()
 
 
     $('body').on('click', '#canceldeletebook',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await showBooks();
     });
 
     $('body').on('click', '.canceldeleteauthor',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await showAuthors();
     });
 
     $('body').on('click', '#canceldeletecategory',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await showCategories();
     });
 
     $('body').on('click', '#cancelregister',async function(e){
-        debugger;
+//        debugger;
         e.preventDefault();
         await showLogin();
     });
@@ -283,13 +290,13 @@ function createEventHandlers()
 
     $('body').on('click', '.applyfilter', async function(e){
         e.preventDefault();
-        debugger;
+//        debugger;
         await applyFilter();
     });
 
     $('body').on('click', '.resetfilter', async function(e){
         e.preventDefault();
-        debugger;
+ //       debugger;
         await resetFilter();
     });
 
@@ -312,35 +319,35 @@ function createEventHandlers()
     const loginForm = document.getElementById("loginform");
     loginForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-        debugger;
+//        debugger;
         await applyLogin();
     });
 
     const registerForm = document.getElementById("registerform");
     registerForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-        debugger;
+//        debugger;
         await applyRegister();
     });
 
     const bookEditForm = document.getElementById("bookeditform");
     bookEditForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-        debugger;
+//        debugger;
         await saveBookForm(null);
     });
 
     const authorEditForm = document.getElementById("authoreditform");
     authorEditForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-        debugger;
+//        debugger;
         await saveAuthorForm();
     });
 
     const categoryEditForm = document.getElementById("categoryeditform");
     categoryEditForm.addEventListener("submit", async (e)=>{
         e.preventDefault();
-        debugger;
+//        debugger;
         await saveCategoryForm();
     });
 
@@ -348,7 +355,7 @@ function createEventHandlers()
 
 function  fillSelects()
 {
-    debugger;
+//    debugger;
     fillCategorySelects();
 
     fillAuthorSelects();
@@ -364,7 +371,7 @@ function  fillSelects()
 }
 function  fillCategorySelects()
 {
-    debugger;
+//    debugger;
     let categories = getCategoryList();
     let bookcategory = $('#editbookcategory'); 
     bookcategory.empty(); 
@@ -377,7 +384,7 @@ function  fillCategorySelects()
 
 function  fillAuthorSelects()
 {
-    debugger;
+//    debugger;
     let authors = getAuthorList();
     let bookauthor = $('#editbookauthor'); 
     bookauthor.empty(); 
@@ -465,7 +472,7 @@ async function showCategories()
 
 async function showUsers()
 {
-    debugger;
+//    debugger;
     hiddenAll();
     $('#userpart').first().removeClass("hidden");
     let users = await fetchUsers();
@@ -523,28 +530,28 @@ function showNewState()
     $('#newstatepart').first().removeClass("hidden");
 }
 
-function saveToLocalStorage(data)
-{
-    localStorage.setItem('authors', JSON.stringify(data.authors));
-    localStorage.setItem('categories', JSON.stringify(data.categories));
-    localStorage.setItem('books', JSON.stringify(data.books));
-}
+// function saveToLocalStorage(data)
+// {
+//     localStorage.setItem('authors', JSON.stringify(data.authors));
+//     localStorage.setItem('categories', JSON.stringify(data.categories));
+//     localStorage.setItem('books', JSON.stringify(data.books));
+// }
 
-function loadFromLocalStorage()
-{
-    let authors = JSON.parse( localStorage.authors );
-    let categories = JSON.parse( localStorage.categories );
-    let books = JSON.parse( localStorage.books );
-    books.forEach( book => {
-        book.author = authors.find(a => a.authorId == author.authorId);
-    })
+// function loadFromLocalStorage()
+// {
+//     let authors = JSON.parse( localStorage.authors );
+//     let categories = JSON.parse( localStorage.categories );
+//     let books = JSON.parse( localStorage.books );
+//     books.forEach( book => {
+//         book.author = authors.find(a => a.authorId == author.authorId);
+//     })
 
-    return {authors: authors, categories: categories, books: books};
-}
+//     return {authors: authors, categories: categories, books: books};
+// }
 
 async function applyLogin()
 {
-    debugger;
+ //   debugger;
     const userName = $('#loginname').first().val();
     const password = $('#loginpassword').first().val();
     if (userName && password)
@@ -565,7 +572,7 @@ async function applyLogin()
 
 async function applyRegister()
 {
-    debugger;
+//    debugger;
     const userName = $('#registername').first().val();
     const password = $('#registerpassword').first().val();
     const confirmPassword = $('#registerconfirmpassword').first().val();

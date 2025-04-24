@@ -2,7 +2,7 @@
 
 async function fillCategoryForm(categoryId)
 {
-    debugger;
+//    debugger;
     showCategoryEdit();
     if( !$('#categoryediterror').first().hasClass("hidden")){
         $('#categoryediterror').first().addClass("hidden");
@@ -28,7 +28,7 @@ async function fillCategoryForm(categoryId)
 
 async function saveCategoryForm()
 {
-    debugger;
+//    debugger;
     let category = {};
     category.categoryId = $('#categoryid').first().val();
     category.categoryName = $('#categoryname').first().val();
@@ -81,7 +81,7 @@ async function cancelCategoryForm()
 
 function fillCategoryTable(categories)
 {
-    debugger;
+//    debugger;
     var results = $('#categorytable');  // 
     results.empty();                    // clear element
     results.append('<thead><tr><th>Id</th><th>Name</th><th>Description</th><th>Last Update</th></tr></thead><tbody>')
@@ -90,12 +90,16 @@ function fillCategoryTable(categories)
             <td>${categories[i].categoryName}</td> 
             <td>${categories[i].categoryDescription}</td> 
             <td>${categories[i].lastUpdate}</td>
-            <td><button class="editcategory" data-id="${categories[i].categoryId}">Edit</button></td>
-            <td><button class="deletecategory" data-id="${categories[i].categoryId}">Delete</button></td>
+            <td class="onlyadmin"><button class="editcategory" data-id="${categories[i].categoryId}">Edit</button></td>
+            <td class="onlyadmin"><button class="deletecategory" data-id="${categories[i].categoryId}">Delete</button></td>
             <td><button class="showcategorybooks" data-id="${categories[i].categoryId}">Show books</button></td>
             <tr/>`); 
     }
-
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    if (user.role != 'Admin')
+    {
+        $('.onlyadmin').addClass("hidden");
+    }
 }
 
 async function fillDeleteCategoryForm(categoryId)
@@ -138,7 +142,7 @@ async function fillDeleteCategoryForm(categoryId)
 
 async function deleteCategory()
 {
-    debugger;
+//    debugger;
     const categoryId = $('#deletecategoryid').first().val();
     const result = await deleteCategoryFromServer(categoryId);
     if (result)

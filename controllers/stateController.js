@@ -30,7 +30,7 @@ exports.postState = async function(request, response)
     const state = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+ //   debugger;
     connection.connect();
     let sql = null;
     if (state.stateId)
@@ -74,7 +74,7 @@ exports.deleteState = async function(request, response){
         response.status(403).send("Access denited.");
     }    
     const id = request.params.id; 
-    debugger;
+//    debugger;
     const connection = mysql.createConnection(connectionOption);
     const sqlSelect = `SELECT readingStateId, stateName FROM readingstate WHERE ReadingStateId = '${id}'`;
     const sql = `DELETE FROM readingstate WHERE ReadingStateId = '${id}'`;

@@ -75,7 +75,7 @@ exports.register = async function(request, response)
     const login = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+ //   debugger;
     if (!login.userName || login.password)
     {
         response.status(400).send(`User name or password is not correct.`);

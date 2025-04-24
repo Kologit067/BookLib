@@ -1,7 +1,7 @@
 
 function fillUserTable(users)
 {
-    debugger;
+//    debugger;
     var results = $('#usertable');  // 
     results.empty();                    // clear element
     results.append('<thead><tr><th>Id</th><th>Name</th><th>Role</th></thead><tbody>')

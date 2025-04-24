@@ -30,7 +30,6 @@ async function saveAuthor(author)
 {
 //    debugger;
     let response = await saveAuthorToServer(author);
-    debugger;
     if (response)
     {
         if (response.status)
@@ -54,7 +53,7 @@ async function saveAuthor(author)
 
 async function deleteAuthor()
 {
-    debugger;
+//    debugger;
     const authorId = $('#deleteauthorid').first().val();
     const result = await deleteAuthorFromServer(authorId);
     if (result)
@@ -71,7 +70,7 @@ async function deleteAuthor()
 
 function fillAuthorTable(authors)
 {
-    debugger;
+ //   debugger;
  
     let results = $('#authortable'); // получаем нужный элемент
     results.empty(); //очищаем элемент
@@ -97,7 +96,7 @@ async function cancelAuthorForm()
 
 async function fillAuthorForm(authorId)
 {
-    debugger;
+//    debugger;
     showAuthorEdit();
     if( !$('#authorediterror').first().hasClass("hidden")){
         $('#authorediterror').first().addClass("hidden");
@@ -122,7 +121,7 @@ async function fillAuthorForm(authorId)
 
 async function fillDeleteAuthorForm(authorId)
 {
-    debugger;
+//    debugger;
     if (authorId)
     {
         let author = await fetchAuthorById(authorId);

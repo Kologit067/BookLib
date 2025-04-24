@@ -1,7 +1,7 @@
 
 async function fillBookForm(bookId)
 {
-    debugger;
+//    debugger;
     showBookEdit();
     if( !$('#bookediterror').first().hasClass("hidden")){
         $('#bookediterror').first().addClass("hidden");
@@ -43,7 +43,7 @@ async function fillBookForm(bookId)
 
 async function saveBookForm()
 {
-    debugger;
+//    debugger;
     let book = {};
     book.bookId = $('#editbookid').first().val();
     book.authorId = $('#editbookauthor').first().val();
@@ -73,7 +73,7 @@ async function saveBookForm()
 async function saveBook(book)
 {
     let response = await saveBookToServer(book);
-    debugger;
+//    debugger;
     if (response)
     {
         if (response.status)
@@ -99,8 +99,8 @@ async function saveBook(book)
 
 async function saveNewState()
 {
-    debugger;
-    let user = JSON.parse( localStorage.user );
+//    debugger;
+    let user = JSON.parse( sessionStorage.user );
     let newState = {};
     newState.page = $('#statepage').first().val() || 0;
     newState.readingStateId = $('#bookreadingstate').first().val();
@@ -149,19 +149,27 @@ async function cancelNewStateForm()
 
 function fillBookTable(books)
 {
+//    debugger;
     var results = $('#booktable');  // 
     results.empty();                // clear element
-    results.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th><th></th></tr></thead><tbody>')
+    results.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th></tr></thead><tbody>');
+    let user = JSON.parse(sessionStorage.getItem('user'));
     for (var i = 0; i < books.length; i++) {
         results.append(`<tr><td>${books[i].bookId}</td> 
             <td>${books[i].authorName}</td> 
             <td>${books[i].title}</td> 
             <td>${books[i].userName}</td> 
-            <td>${books[i].lastUpdate}</td>
-            <td><button class="editbook" data-id="${books[i].bookId}">Edit</button></td>
-            <td><button class="deletebook" data-id="${books[i].bookId}">Delete</button></td>
-            </tr>`); // add row
+            <td>${books[i].lastUpdate}</td>` +
+            ((user.role == 'Admin' || user.userId == books[i].userId) ? 
+            `<td class="onlyadmin"><button class="editbook" data-id="${books[i].bookId}">Edit</button></td>
+            <td class="onlyadmin"><button class="deletebook" data-id="${books[i].bookId}">Delete</button></td>` : '')
+            +`</tr>`); // add row
     }
+    // let user = JSON.parse(sessionStorage.getItem('user'));
+    // if (user.role != 'Admin')
+    // {
+    //     $('.onlyadmin').addClass("hidden");
+    // }
 }
 
 function fillBookTableToDiv(books, div)
@@ -233,8 +241,8 @@ async function fillBookStateForm(bookId)
 
 async function newReadingState(bookId)
 {
-    debugger;
-    let user = JSON.parse( localStorage.user );
+//    debugger;
+    let user = JSON.parse( sessionStorage.user );
     let bookReadingState = await getBookReadingState(bookId, user.userId);
     localStorage.setItem('bookReadingState', JSON.stringify(bookReadingState));
     if (bookReadingState.bookReadingStateId) {
@@ -272,7 +280,7 @@ async function fillDeleteBookForm(bookId)
 
 async function deleteBook()
 {
-    debugger;
+//    debugger;
     const bookId = $('#deletebookid').first().val();
     const result = await deleteBookFromServer(bookId);
     if (result)
@@ -303,7 +311,7 @@ async function deleteBook()
 
 async function addBookToCategory()
 {
-    debugger;
+//    debugger;
     let bookCategory = {};
     bookCategory.bookId = $('#editbookid').first().val();
     bookCategory.categoryId = $('#editbookcategory').first().val();
@@ -333,7 +341,7 @@ async function addBookToCategory()
 
 async function deleteBookCategory(categoryId)
 {
-    debugger;
+//    debugger;
     const bookId = $('#editbookid').first().val();
     const result = await deleteBookCategoryFromServer(bookId, categoryId);
 
