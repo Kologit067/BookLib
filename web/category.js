@@ -70,6 +70,7 @@ async function saveCategory(category)
         categories.push(category);
     }
     localStorage.setItem('categories', JSON.stringify(categories));
+    fillCategorySelects();
     return response;
 }
 

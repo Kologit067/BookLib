@@ -47,7 +47,7 @@ async function saveAuthor(author)
             authors.push(author);
         }
         localStorage.setItem('authors', JSON.stringify(authors));
-    
+        fillAuthorSelects();
     }
     return author;
 }

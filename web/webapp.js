@@ -349,21 +349,9 @@ function createEventHandlers()
 function  fillSelects()
 {
     debugger;
-    let categories = getCategoryList();
-    let bookcategory = $('#editbookcategory'); 
-    bookcategory.empty(); 
-    for (let i = 0; i < categories.length; i++) {
-        const categoryOption = `<option value="${categories[i].categoryId}">${categories[i].categoryName}</option>`;
-        bookcategory.append(categoryOption); 
-    }
+    fillCategorySelects();
 
-    let authors = getAuthorList();
-    let bookauthor = $('#editbookauthor'); 
-    bookauthor.empty(); 
-    for (let i = 0; i < authors.length; i++) {
-        const bookOption = `<option value="${authors[i].authorId}">${authors[i].authorName}</option>`;
-        bookauthor.append(bookOption); 
-    }
+    fillAuthorSelects();
 
     let readingStates = getStateList();
     newreadingstate = $('#bookreadingstate'); 
@@ -374,6 +362,32 @@ function  fillSelects()
     }
 
 }
+function  fillCategorySelects()
+{
+    debugger;
+    let categories = getCategoryList();
+    let bookcategory = $('#editbookcategory'); 
+    bookcategory.empty(); 
+    for (let i = 0; i < categories.length; i++) {
+        const categoryOption = `<option value="${categories[i].categoryId}">${categories[i].categoryName}</option>`;
+        bookcategory.append(categoryOption); 
+    }
+
+}
+
+function  fillAuthorSelects()
+{
+    debugger;
+    let authors = getAuthorList();
+    let bookauthor = $('#editbookauthor'); 
+    bookauthor.empty(); 
+    for (let i = 0; i < authors.length; i++) {
+        const bookOption = `<option value="${authors[i].authorId}">${authors[i].authorName}</option>`;
+        bookauthor.append(bookOption); 
+    }
+
+}
+
 
 function hiddenAll()
 {
