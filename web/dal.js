@@ -1,9 +1,8 @@
-
 async function fetchBooks() {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch('http://localhost:3000/api/book/all', option); // 
+        let response = await fetch(`${urlOption.host}/api/book/all`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('books', JSON.stringify(data));
         return data;
@@ -19,9 +18,9 @@ async function fetchBooks() {
 async function fetchBookById(bookId) {
     try
     {
-        debugger;
+//        debugger;
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/book/byid/${bookId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/book/byid/${bookId}`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('book', JSON.stringify(data));
         return data;
@@ -34,12 +33,64 @@ async function fetchBookById(bookId) {
     return null;
 }
 
+async function fetchBooksByAuthor(authorId) {
+    try
+    {
+ //       debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`${urlOption.host}/api/book/byauthor/${authorId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching author books:', error); // 
+    }
+    return null;
+}
+
+
+async function fetchBooksByCategory(categoryId) {
+    try
+    {
+//        debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`${urlOption.host}/api/book/bycategory/${categoryId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching category books:', error); // 
+    }
+    return null;
+}
+
+async function fetchBooksByUser(userId) {
+    try
+    {
+ //       debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`${urlOption.host}/api/book/byuser/${userId}`, option); // 
+        let data = await response.json();  // 
+        return data;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching author books:', error); // 
+    }
+    return null;
+}
+
 async function fetchAuthors() {
     try
     {
  //       debugger;
         let option = getOptionForGet()
-        let response = await fetch('http://localhost:3000/api/author/all', option); // 
+        let response = await fetch(`${urlOption.host}/api/author/all`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('authors', JSON.stringify(data));
         return data;
@@ -56,7 +107,7 @@ async function fetchAuthorById(authorId) {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/author/byid/${authorId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/author/byid/${authorId}`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('author', JSON.stringify(data));
         return data;
@@ -74,7 +125,7 @@ async function fetchCategories() {
     {
  //       debugger;
         let option = getOptionForGet()
-        let response = await fetch('http://localhost:3000/api/category/all', option); // 
+        let response = await fetch(`${urlOption.host}/api/category/all`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('categories', JSON.stringify(data));
         return data;
@@ -91,7 +142,7 @@ async function fetchCategoryById(categoryId) {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/category/byid/${categoryId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/category/byid/${categoryId}`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('category', JSON.stringify(data));
         return data;
@@ -104,11 +155,33 @@ async function fetchCategoryById(categoryId) {
     return null;
 }
 
+async function fetchUsers() {
+    try
+    {
+    //    debugger;
+        let option = getOptionForGet()
+        let response = await fetch(`${urlOption.host}/api/user/all`, option); // 
+        if (response.status == 200)
+        {
+            let data = await response.json();  // 
+            localStorage.setItem('users', JSON.stringify(data));
+            return data;
+        }
+        return response;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching users:', error); // 
+        return null;
+    }  
+}
+
 async function getBookCategoryList(bookId) {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/category/bybookid/${bookId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/category/bybookid/${bookId}`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('bookcategories', JSON.stringify(data));
         return data;
@@ -125,7 +198,7 @@ async function getBookStateList(bookId) {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/state/historybybookid/${bookId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/state/historybybookid/${bookId}`, option); // 
         let data = await response.json();  // 
         localStorage.setItem('bookstates', JSON.stringify(data));
         return data;
@@ -142,7 +215,7 @@ async function getBookState(bookId) {
     try
     {
         let option = getOptionForGet()
-        let response = await fetch(`http://localhost:3000/api/state/bybookid/${bookId}`, option); // 
+        let response = await fetch(`${urlOption.host}/api/state/bybookid/${bookId}`, option); // 
         if (response.status && response.status == 404)
             return {bookId:bookId, readingStateId: null, page: null};
         let data = await response.json();  // 
@@ -160,8 +233,10 @@ async function getBookState(bookId) {
 async function fetchStates() {
     try 
     {
+ //       debugger;
         let option = getOptionForGet()
-        let response = await fetch('http://localhost:3000/api/state/all', option) // 
+        let url = `${urlOption.host}/api/state/all`;
+        let response = await fetch(url, option) // 
         let data = await response.json();  // 
         localStorage.setItem('states', JSON.stringify(data));
         return data;
@@ -175,7 +250,7 @@ async function fetchStates() {
 }
 
 function getOptionForGet() {
-    let user = JSON.parse( localStorage.user );
+    let user = JSON.parse( sessionStorage.user );
     return {
         method: 'GET',
         headers: {
@@ -185,7 +260,7 @@ function getOptionForGet() {
 }
 
 function getOptionForPost() {
-    let user = JSON.parse( localStorage.user );
+    let user = JSON.parse( sessionStorage.user );
     return {
         method: 'POST',
         headers: {
@@ -196,7 +271,7 @@ function getOptionForPost() {
 }
 
 function getOptionForDelete() {
-    let user = JSON.parse( localStorage.user );
+    let user = JSON.parse( sessionStorage.user );
     return {
         method: 'DELETE',
         headers: {
@@ -210,14 +285,13 @@ function getOptionForDelete() {
 async function deleteBookFromServer(bookId) {
     try 
     {
-        debugger;
+//        debugger;
         const option = getOptionForDelete();
-        let response = await fetch(`http://localhost:3000/api/book/${bookId}`, option) // 
-        debugger;
+        let response = await fetch(`${urlOption.host}/api/book/${bookId}`, option) // 
         let result = null;
         if (response.status != 400)
         {
-            debugger;
+//            debugger;
             result = await response.json();  // 
         }
         return response;
@@ -235,7 +309,7 @@ async function deleteAuthorFromServer(authorId) {
     {
  //       debugger;
         const option = getOptionForDelete();
-        let response = await fetch(`http://localhost:3000/api/author/${authorId}`, option) // 
+        let response = await fetch(`${urlOption.host}/api/author/${authorId}`, option) // 
  //       debugger;
         let result = null;
         if (response.status != 400)
@@ -258,7 +332,7 @@ async function deleteCategoryFromServer(categoryId) {
     {
 //        debugger;
         const option = getOptionForDelete();
-        let response = await fetch(`http://localhost:3000/api/category/${categoryId}`, option) // 
+        let response = await fetch(`${urlOption.host}/api/category/${categoryId}`, option) // 
 //        debugger;
         let result = null;
         if (response.status != 400)
@@ -281,7 +355,7 @@ async function deleteBookCategoryFromServer(bookId,categoryId) {
     {
         debugger;
         const option = getOptionForDelete();
-        let response = await fetch(`http://localhost:3000/api/book/deleteFromCategory/${bookId}/${categoryId}`, option) // 
+        let response = await fetch(`${urlOption.host}/api/book/deleteFromCategory/${bookId}/${categoryId}`, option) // 
 //        debugger;
         let result = null;
         if (response.status != 400)
@@ -313,9 +387,38 @@ async function login(userName, password) {
                 password : password
             })
           }
-        let response = await fetch('http://localhost:3000/api/login', option) // 
+        let response = await fetch(`${urlOption.host}/api/login`, option) // 
         let user = null;
         if (response.status != 400)
+            user = await response.json();  // 
+        sessionStorage.setItem('user', JSON.stringify(user));
+        return user;
+    }
+    catch(error)
+    {
+        debugger;
+        console.error('Error fetching states:', error); // 
+        return null;
+    }  
+}
+
+async function register(userName, password) {
+    try 
+    {
+//        debugger;
+        const option = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify({
+                userName : userName,
+                password : password
+            })
+          }
+        let response = await fetch(`${urlOption.host}/api/register`, option) // 
+        let user = null;
+        if (response.status == 200)
             user = await response.json();  // 
         localStorage.setItem('user', JSON.stringify(user));
         return user;
@@ -331,17 +434,18 @@ async function login(userName, password) {
 async function saveBookToServer (book) {
     try 
     {
-        debugger;
+//        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(book)
-        let response = await fetch(`http://localhost:3000/api/book`, option) // 
-        debugger;
+        let response = await fetch(`${urlOption.host}/api/book`, option) // 
         let result = null;
         if (response.status != 400)
         {
-            debugger;
             result = await response.json();  // 
-            book.bookId = result.insertId;
+            if (result.insertId)
+            {
+               book.bookId = result.insertId;
+            }
             return book;
         }
         return response;
@@ -357,17 +461,20 @@ async function saveBookToServer (book) {
 async function saveAuthorToServer (author) {
     try 
     {
-//        debugger;
+        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(author)
-        let response = await fetch(`http://localhost:3000/api/author`, option) // 
+        let response = await fetch(`${urlOption.host}/api/author`, option) // 
 //        debugger;
         let result = null;
         if (response.status != 400)
         {
 //            debugger;
             result = await response.json();  // 
-            author.authorId = result.insertId;
+            if (result.insertId)
+            {
+                author.authorId = result.insertId;
+            }
             return author;
         }
         return response;
@@ -386,14 +493,17 @@ async function saveCategoryToServer (category) {
 //        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(category)
-        let response = await fetch(`http://localhost:3000/api/category`, option) // 
-//        debugger;
+        let response = await fetch(`${urlOption.host}/api/category`, option) // 
+        debugger;
         let result = null;
         if (response.status != 400)
         {
 //            debugger;
             result = await response.json();  // 
-            category.categoryId = result.insertId;
+            if (result.insertId)
+            {
+                category.categoryId = result.insertId;
+            }
             return category;
         }
         return response;
@@ -413,14 +523,17 @@ async function saveBookCategoryToServer(bookCategory) {
 //        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(bookCategory)
-        let response = await fetch(`http://localhost:3000/api/book/addToCategory`, option) // 
+        let response = await fetch(`${urlOption.host}/api/book/addToCategory`, option) // 
 //        debugger;
         let result = null;
         if (response.status == 200)
         {
 //            debugger;
             result = await response.json();  // 
-            bookCategory.bookCategoryId = result.insertId;
+            if (result.insertId)
+            {
+                bookCategory.bookCategoryId = result.insertId;
+            }
             return bookCategory;
         }
         return response;
@@ -440,14 +553,17 @@ async function updateReadingState(newState) {
 //        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(newState)
-        let response = await fetch(`http://localhost:3000/api/book/updatestate`, option) // 
+        let response = await fetch(`${urlOption.host}/api/book/updatestate`, option) // 
 //        debugger;
         let result = null;
         if (response.status == 200)
         {
 //            debugger;
             result = await response.json();  // 
-            newState.bookReadingStateId = result.insertId;
+            if (result.insertId)
+            {
+                newState.bookReadingStateId = result.insertId;
+            }
             return newState;
         }
         return response;

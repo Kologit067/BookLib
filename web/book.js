@@ -1,7 +1,7 @@
 
 async function fillBookForm(bookId)
 {
-    debugger;
+//    debugger;
     showBookEdit();
     if( !$('#bookediterror').first().hasClass("hidden")){
         $('#bookediterror').first().addClass("hidden");
@@ -43,34 +43,37 @@ async function fillBookForm(bookId)
 
 async function saveBookForm()
 {
-    debugger;
+//    debugger;
     let book = {};
     book.bookId = $('#editbookid').first().val();
     book.authorId = $('#editbookauthor').first().val();
     book.title = $('#editbooktitle').first().val();
     book.bookDescription = $('#editbookdescription').first().val();
 
-    response =await saveBook(book);
-    if (response.status)
+    if (book.title && book.bookDescription)
     {
-        const message = await response.text();
-        $('#bookediterror').first().removeClass("hidden");
-        $("#bookediterror").text(`Error: ${message}`);
-    }
-    else
-    {
-        if( !$('#bookediterror').first().hasClass("hidden"))
+        response =await saveBook(book);
+        if (response.status)
         {
-            $('#bookediterror').first().addClass("hidden");
+            const message = await response.text();
+            $('#bookediterror').first().removeClass("hidden");
+            $("#bookediterror").text(`Error: ${message}`);
         }
-        await showBooks();
+        else
+        {
+            if( !$('#bookediterror').first().hasClass("hidden"))
+            {
+                $('#bookediterror').first().addClass("hidden");
+            }
+            await showBooks();
+        }
     }
 }
 
 async function saveBook(book)
 {
     let response = await saveBookToServer(book);
-    debugger;
+//    debugger;
     if (response)
     {
         if (response.status)
@@ -96,8 +99,8 @@ async function saveBook(book)
 
 async function saveNewState()
 {
-    debugger;
-    let user = JSON.parse( localStorage.user );
+//    debugger;
+    let user = JSON.parse( sessionStorage.user );
     let newState = {};
     newState.page = $('#statepage').first().val() || 0;
     newState.readingStateId = $('#bookreadingstate').first().val();
@@ -146,17 +149,45 @@ async function cancelNewStateForm()
 
 function fillBookTable(books)
 {
+//    debugger;
     var results = $('#booktable');  // 
     results.empty();                // clear element
-    results.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th><th></th></tr></thead><tbody>')
+    results.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th></tr></thead><tbody>');
+    let user = JSON.parse(sessionStorage.getItem('user'));
     for (var i = 0; i < books.length; i++) {
-        results.append('<tr><td>' + books[i].bookId + '</td> <td>' + books[i].authorName +
-            '</td> <td>' + books[i].title +
-            '</td> <td>' + books[i].userName +
-            '</td> <td>' + books[i].lastUpdate +
-            '</td><td><button class="editbook"+ data-id="' + books[i].bookId + '">Edit</button></td></tr>'); // add row
+        results.append(`<tr><td>${books[i].bookId}</td> 
+            <td>${books[i].authorName}</td> 
+            <td>${books[i].title}</td> 
+            <td>${books[i].userName}</td> 
+            <td>${books[i].lastUpdate}</td>` +
+            ((user.role == 'Admin' || user.userId == books[i].userId) ? 
+            `<td class="onlyadmin"><button class="editbook" data-id="${books[i].bookId}">Edit</button></td>
+            <td class="onlyadmin"><button class="deletebook" data-id="${books[i].bookId}">Delete</button></td>` : '')
+            +`</tr>`); // add row
     }
+    // let user = JSON.parse(sessionStorage.getItem('user'));
+    // if (user.role != 'Admin')
+    // {
+    //     $('.onlyadmin').addClass("hidden");
+    // }
+}
 
+function fillBookTableToDiv(books, div)
+{
+    div.first().removeClass("hidden");
+    div.empty();                // clear element
+    if (books && books.length && books.length > 0)
+    {
+        div.append('<thead><tr><th>Id</th><th>Author</th><th>Title</th><th>User</th><th>Last Update</th><th></th></tr></thead><tbody>')
+        for (var i = 0; i < books.length; i++) {
+            div.append(`<tr><td>${books[i].bookId}</td> 
+            <td>${books[i].authorName}</td> 
+            <td>${books[i].title}</td> 
+            <td>${books[i].userName}</td> 
+            <td>${books[i].lastUpdate}</td>
+            </tr>`); // add row
+        }
+    }
 }
 
 async function fillBookStateTable(bookId)
@@ -210,8 +241,8 @@ async function fillBookStateForm(bookId)
 
 async function newReadingState(bookId)
 {
-    debugger;
-    let user = JSON.parse( localStorage.user );
+//    debugger;
+    let user = JSON.parse( sessionStorage.user );
     let bookReadingState = await getBookReadingState(bookId, user.userId);
     localStorage.setItem('bookReadingState', JSON.stringify(bookReadingState));
     if (bookReadingState.bookReadingStateId) {
@@ -249,16 +280,29 @@ async function fillDeleteBookForm(bookId)
 
 async function deleteBook()
 {
-    debugger;
-    const bookId = $('#deletebookId').first().val();
+//    debugger;
+    const bookId = $('#deletebookid').first().val();
     const result = await deleteBookFromServer(bookId);
     if (result)
     {
-        let books = JSON.parse( localStorage.books );
-        books = books.filter(function(item) {
-            item.bookId != bookId
-        });
-        localStorage.setItem('books', JSON.stringify(books));
+        if (result.status && result.status != 200)
+        {
+            const message = await result.text();
+            $('#bookdeleteissue').first().removeClass("hidden");
+            $("#bookdeleteissuetext").text(`Error: ${message}`);
+        }
+        else
+        {
+            let books = JSON.parse( localStorage.books );
+            books = books.filter(function(item) {
+                item.bookId != bookId
+            });
+            localStorage.setItem('books', JSON.stringify(books));
+            if( !$('#bookdeleteissue').first().hasClass("hidden"))
+            {
+                $('#bookdeleteissue').first().addClass("hidden");
+            }
+        }
     }
 
     await showBooks();
@@ -267,7 +311,7 @@ async function deleteBook()
 
 async function addBookToCategory()
 {
-    debugger;
+//    debugger;
     let bookCategory = {};
     bookCategory.bookId = $('#editbookid').first().val();
     bookCategory.categoryId = $('#editbookcategory').first().val();
@@ -297,11 +341,26 @@ async function addBookToCategory()
 
 async function deleteBookCategory(categoryId)
 {
-    debugger;
+//    debugger;
     const bookId = $('#editbookid').first().val();
     const result = await deleteBookCategoryFromServer(bookId, categoryId);
 
     await fillBookCategoryTable(bookId);
 }
 
+async function applyFilter()
+{
+    const filerTitle = $('#filertitle').first().val().toLowerCase();
+    let books = await getBookList();
+    books = books.filter(item => item.title.toLowerCase().indexOf(filerTitle) >= 0);
+    fillBookTable(books);
+}
+
+
+async function resetFilter()
+{
+    $('#filertitle').first().val('');
+    let books = await getBookList();
+    fillBookTable(books);
+}
 

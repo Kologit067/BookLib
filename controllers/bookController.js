@@ -122,6 +122,8 @@ WHERE BookId = ${id});`);
         
         let deleteStateResults  = await  connection.promise().query(`DELETE FROM booklib.bookreadingstate WHERE BookId = ${id};`);
         
+        let deleteCategoryResults  = await  connection.promise().query(`DELETE FROM booklib.bookcategory WHERE BookId = ${id};`);
+        
         let results  = await  connection.promise().query(sql);
         response.status(200);
         response.send(results);
@@ -170,7 +172,7 @@ WHERE BookId = ${id} `;
 exports.getBooksByAuthor = async function(request, response){
     const authorId = request.params.id; 
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+ //   debugger;
     connection.connect();
     const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
@@ -192,9 +194,9 @@ WHERE b.AuthorId = ${authorId} `;
 exports.getBooksByUser = async function(request, response){
     const userId = request.params.id; 
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+ //   debugger;
     connection.connect();
-    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, tileName, bookDescription, b.lastUpdate, b.userId, u.userName 
+    const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
@@ -214,7 +216,7 @@ WHERE b.UserId = ${userId}`;
 exports.getBooksByCategory = async function(request, response){
     const categoryId = request.params.id; 
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+ //   debugger;
     connection.connect();
     const sqlSelect = `SELECT b.bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
