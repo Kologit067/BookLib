@@ -442,7 +442,10 @@ async function saveBookToServer (book) {
         if (response.status != 400)
         {
             result = await response.json();  // 
-            book.bookId = result.insertId;
+            if (result.insertId)
+            {
+               book.bookId = result.insertId;
+            }
             return book;
         }
         return response;
@@ -458,7 +461,7 @@ async function saveBookToServer (book) {
 async function saveAuthorToServer (author) {
     try 
     {
-//        debugger;
+        debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(author)
         let response = await fetch(`${urlOption.host}/api/author`, option) // 
@@ -468,7 +471,10 @@ async function saveAuthorToServer (author) {
         {
 //            debugger;
             result = await response.json();  // 
-            author.authorId = result.insertId;
+            if (result.insertId)
+            {
+                author.authorId = result.insertId;
+            }
             return author;
         }
         return response;
@@ -488,13 +494,16 @@ async function saveCategoryToServer (category) {
         const option = getOptionForPost();
         option.body = JSON.stringify(category)
         let response = await fetch(`${urlOption.host}/api/category`, option) // 
-//        debugger;
+        debugger;
         let result = null;
         if (response.status != 400)
         {
 //            debugger;
             result = await response.json();  // 
-            category.categoryId = result.insertId;
+            if (result.insertId)
+            {
+                category.categoryId = result.insertId;
+            }
             return category;
         }
         return response;
@@ -521,7 +530,10 @@ async function saveBookCategoryToServer(bookCategory) {
         {
 //            debugger;
             result = await response.json();  // 
-            bookCategory.bookCategoryId = result.insertId;
+            if (result.insertId)
+            {
+                bookCategory.bookCategoryId = result.insertId;
+            }
             return bookCategory;
         }
         return response;
@@ -548,7 +560,10 @@ async function updateReadingState(newState) {
         {
 //            debugger;
             result = await response.json();  // 
-            newState.bookReadingStateId = result.insertId;
+            if (result.insertId)
+            {
+                newState.bookReadingStateId = result.insertId;
+            }
             return newState;
         }
         return response;

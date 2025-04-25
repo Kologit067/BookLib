@@ -54,13 +54,13 @@ async function saveCategoryForm()
 
 async function saveCategory(category)
 {
-//    debugger;
+    debugger;
     let response  = await saveCategoryToServer(category);
     if (response.status)
         return response;
     category = response;
     let categories = JSON.parse( localStorage.categories );
-    let idx = categories.findIndex(t => t.categoryCd == category.categoryId);
+    let idx = categories.findIndex(t => t.categoryId == category.categoryId);
     if (idx > -1)
     {
         categories[idx] = category;
