@@ -3,5 +3,5 @@ exports.connectionOption = {
     user: "root",
     database: "booklib",
     connectTimeout: 120000,
-    password: "admin"
+    password: "7ve73b3u8fh3"
 };

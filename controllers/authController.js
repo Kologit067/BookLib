@@ -34,10 +34,10 @@ exports.getUser = async function(token)
 
 exports.login = async function(request, response)
 {
+ //   debugger;
     const login = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-//    debugger;
     connection.connect();
     const sqlSelect = `SELECT * FROM user WHERE UserName = '${login.userName}' AND Password = '${login.password}'`;
     try {
@@ -76,7 +76,7 @@ exports.register = async function(request, response)
   
     const connection = mysql.createConnection(connectionOption);
  //   debugger;
-    if (!login.userName || login.password)
+    if ( !login.userName || !login.password)
     {
         response.status(400).send(`User name or password is not correct.`);
         return;
