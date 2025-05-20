@@ -506,38 +506,56 @@ async function showAuthors()
 
 function showBookEdit()
 {
-    hiddenAll();
+    if( !$('#bookmain').first().hasClass("hidden")){
+        $('#bookmain').first().addClass("hidden");
+    }
+
     $('#bookeditpart').first().removeClass("hidden");
 }
 
 function showAuthorEdit()
 {
-    hiddenAll();
+    if( !$('#authormain').first().hasClass("hidden")){
+        $('#authormain').first().addClass("hidden");
+    }
+
     $('#authoreditpart').first().removeClass("hidden");
 }
 
 function showCategoryEdit()
 {
-    hiddenAll();
+    if( !$('#cagtegorymain').first().hasClass("hidden")){
+        $('#cagtegorymain').first().addClass("hidden");
+    }
+
     $('#categoryeditpart').first().removeClass("hidden");
 }
 
 
 function showBookDelete()
 {
-    hiddenAll();
+    if( !$('#bookmain').first().hasClass("hidden")){
+        $('#bookmain').first().addClass("hidden");
+    }
+
     $('#bookdeletepart').first().removeClass("hidden");
 }
 
 function showAuthorDelete()
 {
-    hiddenAll();
+    if( !$('#authormain').first().hasClass("hidden")){
+        $('#authormain').first().addClass("hidden");
+    }
+
     $('#authordeletepart').first().removeClass("hidden");
 }
 
 function showCategoryDelete()
 {
-    hiddenAll();
+    if( !$('#cagtegorymain').first().hasClass("hidden")){
+        $('#cagtegorymain').first().addClass("hidden");
+    }
+
     $('#categorydeletepart').first().removeClass("hidden");
 }
 
