@@ -473,6 +473,7 @@ async function showBooks()
 //    debugger;
     hiddenAll();
     $('#bookpart').first().removeClass("hidden");
+    $('#bookmain').first().removeClass("hidden");
     let books = await fetchBooks();
     fillBookTable(books);
 }
@@ -482,6 +483,7 @@ async function showCategories()
 //    debugger;
     hiddenAll();
     $('#categorypart').first().removeClass("hidden");
+    $('#categorymain').first().removeClass("hidden");
     let categories = await fetchCategories();
     fillCategoryTable(categories);
 }
@@ -500,9 +502,10 @@ async function showAuthors()
 //    debugger;
     hiddenAll();
     $('#authorpart').first().removeClass("hidden");
+    $('#authormain').first().removeClass("hidden");
     let authors = await fetchAuthors();
     fillAuthorTable(authors);
-}
+}main
 
 function showBookEdit()
 {
