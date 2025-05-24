@@ -40,6 +40,10 @@ async function prepare()
             $('#usersref').first().addClass("hidden");
         }
     }
+    else
+    {
+        $('.usersref').first().removeClass("hidden");
+    }
     $('.topmenu').first().removeClass("hidden");
 }
 

@@ -6,12 +6,13 @@ const connectionOption = settings.connectionOption;
 exports.getBooks = async function(request, response)
 {
     const connection = mysql.createConnection(connectionOption);
-    //debugger;
+    debugger;
     connection.connect();
     const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
-INNER JOIN User as u ON (b.UserId = u.UserId)`;
+INNER JOIN User as u ON (b.UserId = u.UserId)
+WHERE b.userId = ${global.user.userId} OR ${global.user.role} = 'Admin'`;
     try {
         result = await connection.promise().query(sqlSelect);
         response.send(result[0]);
@@ -42,7 +43,8 @@ SELECT * FROM Category c INNER JOIN BookCategory bc ON c.categoryId = bc.categor
 WHERE bc.bookId = b.bookId AND c.CategoryName LIKE '%${search}%'
 )
 OR a.authorName LIKE '%${search}%'
-OR b.title LIKE '%${search}%'`;
+OR b.title LIKE '%${search}%'
+WHERE b.userId = ${global.user.userId} OR ${global.user.role} = 'Admin' `;
     try {
         result = await connection.promise().query(sqlSelect);
         response.send(result[0]);
@@ -62,7 +64,7 @@ exports.postBook = async function(request, response)
     const book = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    //debugger;
+    debugger;
     connection.connect();
     let sql = null;
  
@@ -81,7 +83,7 @@ exports.postBook = async function(request, response)
                 response.status(403).send("Access denited.");
                 return;
             }    
-            let result = await connection.promise().query(`SELECT * FROM book WHERE title = '${book.title}' and AuthorId = ${book.authorId}  and BookId <> ${book.bookId}`);
+            let result = await connection.promise().query(`SELECT * FROM book WHERE title = '${book.title}' and UserId = ${book.userId} and AuthorId = ${book.authorId}  and BookId <> ${book.bookId}`);
             if (result[0].length > 0)
             {
                 response.status(400).send('Book is already in list.');
