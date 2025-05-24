@@ -148,7 +148,7 @@ exports.deleteBook = async function(request, response){
             console.log("Book not found");
             return;
         }
-        if (global.user.role != 'Admin' && global.user.userId != result[0][0]['bookId'])
+        if (global.user.role != 'Admin' && global.user.userId != result[0][0]['UserId'])
         {
             response.status(403).send("Access denited.");
             return;
@@ -158,7 +158,7 @@ WHERE bookreadingstateId IN (
 SELECT bookreadingstateId FROM booklib.bookreadingstate
 WHERE BookId = ${id});`);
         
-        let deleteStateResults  = await  connection.promise().query(`DELETE FROM booklib.bookreadingstate WHERE BookId = ${id};`);
+        let deleteStateResults    = await  connection.promise().query(`DELETE FROM booklib.bookreadingstate WHERE BookId = ${id};`);
         
         let deleteCategoryResults  = await  connection.promise().query(`DELETE FROM booklib.bookcategory WHERE BookId = ${id};`);
         

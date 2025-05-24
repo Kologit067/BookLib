@@ -43,7 +43,7 @@ async function fillBookForm(bookId)
 
 async function saveBookForm()
 {
-//    debugger;
+    debugger;
     let book = {};
     book.bookId = $('#editbookid').first().val();
     book.authorId = $('#editbookauthor').first().val();
