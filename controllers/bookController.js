@@ -6,13 +6,13 @@ const connectionOption = settings.connectionOption;
 exports.getBooks = async function(request, response)
 {
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+//    debugger;
     connection.connect();
     const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
-WHERE b.userId = ${global.user.userId} OR ${global.user.role} = 'Admin'`;
+WHERE b.userId = ${global.user.userId} OR '${global.user.role}' = 'Admin'`;
     try {
         result = await connection.promise().query(sqlSelect);
         response.send(result[0]);
@@ -37,14 +37,13 @@ exports.getFilterBooks = async function(request, response)
 FROM Book as b
 INNER JOIN Author as a ON (b.AuthorId = a.AuthorId)
 INNER JOIN User as u ON (b.UserId = u.UserId)
-WHERE EXISTS 
+WHERE (b.userId = ${global.user.userId} OR '${global.user.role}' = 'Admin') AND EXISTS 
 (
 SELECT * FROM Category c INNER JOIN BookCategory bc ON c.categoryId = bc.categoryId 
 WHERE bc.bookId = b.bookId AND c.CategoryName LIKE '%${search}%'
 )
 OR a.authorName LIKE '%${search}%'
-OR b.title LIKE '%${search}%'
-WHERE b.userId = ${global.user.userId} OR ${global.user.role} = 'Admin' `;
+OR b.title LIKE '%${search}%' `;
     try {
         result = await connection.promise().query(sqlSelect);
         response.send(result[0]);
@@ -78,7 +77,7 @@ exports.postBook = async function(request, response)
                 response.status(400).send('Book not found.');
                 return;
             }
-            if (global.user.role != 'Admin' && global.user.userId != bookResult[0][0]['bookId'])
+            if (global.user.role != 'Admin' && global.user.userId != bookResult[0][0]['UserId'])
             {
                 response.status(403).send("Access denited.");
                 return;
@@ -103,7 +102,7 @@ exports.postBook = async function(request, response)
                 response.status(400).send('Author not found.');
                 return;
             }
-            let result = await connection.promise().query(`SELECT * FROM book WHERE title = '${book.title}' and AuthorId = ${book.authorId}`);
+            let result = await connection.promise().query(`SELECT * FROM book WHERE title = '${book.title}' and AuthorId = ${book.authorId} AND UserId = ${global.user.userId}`);
             if (result[0].length > 0)
             {
                 response.status(400).send('Book is already in list.');
