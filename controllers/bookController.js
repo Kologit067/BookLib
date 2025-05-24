@@ -63,7 +63,7 @@ exports.postBook = async function(request, response)
     const book = request.body;
   
     const connection = mysql.createConnection(connectionOption);
-    debugger;
+    //debugger;
     connection.connect();
     let sql = null;
  
@@ -109,7 +109,7 @@ exports.postBook = async function(request, response)
                 return;
             }
             sql = `INSERT INTO Book(AuthorId,Title,BookDescription,UserId)
-            VALUES(${book.authorId},'${book.title}','${book.description}',${global.user.userId})`;
+            VALUES(${book.authorId},'${book.title}','${book.bookDescription}',${global.user.userId})`;
         }       
         
         let results = await connection.promise().query(sql);
@@ -178,7 +178,7 @@ WHERE BookId = ${id});`);
  }
 
 exports.getBookById = async function(request, response){
- //   debugger; 
+//    debugger; 
     const id = request.params.id; 
     const connection = mysql.createConnection(connectionOption);
     const sqlSelect = `SELECT bookId, b.authorId, a.authorName, title, fileName, bookDescription, b.lastUpdate, b.userId, u.userName 
@@ -299,7 +299,7 @@ exports.updateState = async function(request, response) {
             response.status(400).send('Book not found.');
             return;
         }
-        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        if (global.user.role != 'Admin' && global.user.userId != bookResult[0][0]['UserId'])
         {
             response.status(403).send("Access denited.");
             return;
@@ -379,7 +379,7 @@ exports.addToCategory = async function(request, response){
             response.status(400).send('Book not found.');
             return;
         }
-        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        if (global.user.role != 'Admin' && global.user.userId != bookResult[0][0]['UserId'])
         {
             response.status(403).send("Access denited.");
             return;
@@ -430,7 +430,7 @@ exports.deleteFromCategory = async function(request, response){
             response.status(404).send('Book not found.');
             return;
         }
-        if (global.user.role != 'Admin' && global.user.userId != bookrResult[0][0]['bookId'])
+        if (global.user.role != 'Admin' && global.user.userId != bookResult[0][0]['UserId'])
         {
             response.status(403).send("Access denited.");
             return;

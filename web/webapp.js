@@ -39,10 +39,15 @@ async function prepare()
         if( !$('#usersref').first().hasClass("hidden")){
             $('#usersref').first().addClass("hidden");
         }
+        if( !$('#addcategory').first().hasClass("hidden")){
+            $('#addcategory').first().addClass("hidden");
+        }
+        addcategory
     }
     else
     {
-        $('.usersref').first().removeClass("hidden");
+        $('#usersref').first().removeClass("hidden");
+        $('#addcategory').first().removeClass("hidden");
     }
     $('.topmenu').first().removeClass("hidden");
 }
@@ -466,7 +471,7 @@ function hiddenAll()
 
 function showLogin()
 {
-    debugger;
+//    debugger;
     hiddenAll();
     if( !$('.topmenu').first().hasClass("hidden")){
         $('.topmenu').first().addClass("hidden");
@@ -517,7 +522,7 @@ async function showAuthors()
     $('#authormain').first().removeClass("hidden");
     let authors = await fetchAuthors();
     fillAuthorTable(authors);
-}main
+}
 
 function showBookEdit()
 {

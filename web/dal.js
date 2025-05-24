@@ -450,7 +450,7 @@ async function register(userName, password) {
 async function saveBookToServer (book) {
     try 
     {
-        debugger;
+    //    debugger;
         const option = getOptionForPost();
         option.body = JSON.stringify(book)
         let response = await fetch(`${urlOption.host}/api/book`, option) // 
